@@ -22,7 +22,7 @@ public class SaveServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         // 2.회원 정보를 객체로 포장하여 적절한 저장소에 저장
-        Member member = new Member(userName, account, password);
+        Member member = new Member(account, password, userName);
 //        System.out.println("member = " + member);
         repo.save(member);
 

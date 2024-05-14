@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<h1>프론트컨트롤러V1 회원가입 양식</h1>
+<h1>프론트컨트롤러V2 회원가입 양식</h1>
 
 <form action="/chap02/v2/save" method="post">
     <label>

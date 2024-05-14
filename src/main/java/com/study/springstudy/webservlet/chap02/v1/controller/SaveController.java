@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SaveController implements ControllerV1{
-
     private MemberMemoryRepo repo = MemberMemoryRepo.getInstance();
+
     @Override
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 1.회원가입 폼에서 넘어온 데이터 읽기
@@ -24,6 +24,6 @@ public class SaveController implements ControllerV1{
         repo.save(member);
 
         //3. 적절한 페이지로 이동 - 조회화면으로 리다이렉트
-        response.sendRedirect("/chap02/v1/show");
+        response.sendRedirect("/chap01/show");
     }
 }

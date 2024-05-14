@@ -5,12 +5,10 @@ import com.study.springstudy.webservlet.View;
 import com.study.springstudy.webservlet.entity.Member;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/chap01/save")
 public class SaveController implements ControllerV2 {
     private MemberMemoryRepo repo = MemberMemoryRepo.getInstance();
 
@@ -21,7 +19,7 @@ public class SaveController implements ControllerV2 {
         String account = request.getParameter("account");
         String password = request.getParameter("password");
 
-        Member member = new Member(userName, account, password);
+        Member member = new Member(account, password, userName);
         repo.save(member);
 
 //        response.sendRedirect("/chap02/show");
