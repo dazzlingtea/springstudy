@@ -11,6 +11,7 @@
 
   <a href="/chap01/join">회원가입하기</a> <br>
   <a href="/chap02/v1/join">회원가입하기(front v1)</a> <br>
+  <a href="/chap02/v2/join">회원가입하기(front v2)</a> <br>
 
 </body>
 </html>
