@@ -36,6 +36,7 @@ public class Score {
         this.total = rs.getInt("total");
         this.average = rs.getDouble("average");
         this.grade = Grade.valueOf(rs.getString("grade"));
+//        this.rank++;
     }
 
     private Grade calcGrade() {
@@ -115,6 +116,7 @@ public class Score {
     public void setGrade(Grade grade) {
         this.grade = grade;
     }
+
 
     @Override
     public String toString() {
