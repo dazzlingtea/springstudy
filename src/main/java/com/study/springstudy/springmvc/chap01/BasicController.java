@@ -52,7 +52,7 @@ public class BasicController {
     }
 
     // 3. 커맨드 객체 (RequestDTO) 사용하기
-    // ex) /spring/chap01/order?orderNum=22&goods=구두&amount=3&price=3000.......
+    // ex) /spring/chap01/order?orderNum=22&goods=구두&amount=3&price=3000...
     @RequestMapping("/order")
     public String order(OrderDto order) {
 
@@ -63,5 +63,6 @@ public class BasicController {
 
         return "";
     }
+
 
 }
