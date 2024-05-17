@@ -34,7 +34,7 @@ public class BoardController {
     @GetMapping("/write")
     public String write() {
         System.out.println("새글쓰기 버튼");
-        return "/board/write";
+        return "board/write";
     }
 
     // 3. 게시글 등록 요청 (/board/write : POST)
