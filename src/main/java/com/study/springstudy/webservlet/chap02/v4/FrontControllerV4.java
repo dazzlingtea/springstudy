@@ -1,6 +1,6 @@
 package com.study.springstudy.webservlet.chap02.v4;
 
-import com.study.springstudy.webservlet.Model;
+import com.study.springstudy.webservlet.MyModel;
 import com.study.springstudy.webservlet.ModelAndView;
 import com.study.springstudy.webservlet.chap02.v4.controller.*;
 
@@ -40,11 +40,11 @@ public class FrontControllerV4 extends HttpServlet {
         // ?name=xfzxf&age=30
         Map<String, String> parameterMap = createParamMap(req);
 
-        Model model = new Model();
-        String viewName = controller.process(parameterMap, model);
+        MyModel myModel = new MyModel();
+        String viewName = controller.process(parameterMap, myModel);
 
         ModelAndView mv = new ModelAndView(viewName);
-        mv.setModel(model);
+        mv.setModel(myModel);
 
         // model데이터 jsp로 보내기
         modelToView(req, mv);
