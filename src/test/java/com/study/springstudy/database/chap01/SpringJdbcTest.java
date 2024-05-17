@@ -1,19 +1,33 @@
 package com.study.springstudy.database.chap01;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
+@Rollback
 class SpringJdbcTest {
 
     @Autowired
     SpringJdbc springJdbc;
+
+    // 각 테스트 전에 공통으로 실행할 코드
+    @BeforeEach
+    void bulkInsert() {
+        for (int i = 0; i < 10; i++) {
+            Person p = new Person(i + 2000, "테스트맨" + i, 10);
+            springJdbc.save(p);
+        }
+    }
 
     // 단위 테스트 프레임워크 : JUnit5
     // 테스트 == 단언 (Assertion)
@@ -70,14 +84,14 @@ class SpringJdbcTest {
             "사람의 이름은 '일백'이고 나이는 10이다.")
     void findOne() {
         //given
-        long id = 100;
+        long id = 30;
         //when
         Person person = springJdbc.findOne(id);
         //then
         System.out.println("person = " + person);
         assertNotNull(person);
-        assertEquals("일백", person.getPersonName());
-        assertEquals(10, person.getPersonAge());
+        assertEquals("삼십", person.getPersonName());
+        assertEquals(30, person.getPersonAge());
 
     }
 

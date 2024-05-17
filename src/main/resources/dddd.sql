@@ -30,3 +30,13 @@ truncate tbl_person;
 SELECT * FROM tbl_person
 # ORDER BY id DESC
 ;
+
+# title, content, writer 데이터만 받아오면 됨
+CREATE TABLE tbl_board (
+    board_no INT(8) PRIMARY KEY auto_increment,
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    writer VARCHAR(100) NOT NULL,
+    view_count INT(8) default 0,
+    reg_date_time DATETIME default current_timestamp
+);

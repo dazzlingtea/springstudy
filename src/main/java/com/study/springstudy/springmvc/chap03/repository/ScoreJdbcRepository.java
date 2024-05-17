@@ -1,13 +1,12 @@
 package com.study.springstudy.springmvc.chap03.repository;
 
 import com.study.springstudy.springmvc.chap03.entity.Score;
-import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository // 저장소 역할하는 컴포넌트
+//@Repository // 저장소 역할하는 컴포넌트
 public class ScoreJdbcRepository implements ScoreRepository{
 
     private String url = "jdbc:mariadb://localhost:3306/spring5";
