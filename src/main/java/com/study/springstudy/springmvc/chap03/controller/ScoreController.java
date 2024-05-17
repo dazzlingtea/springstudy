@@ -2,13 +2,14 @@ package com.study.springstudy.springmvc.chap03.controller;
 
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springstudy.springmvc.chap03.entity.Score;
-import com.study.springstudy.springmvc.chap03.repository.ScoreJdbcRepository;
 import com.study.springstudy.springmvc.chap03.repository.ScoreRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
     - /score/register : POST
 
     3. 성적정보 삭제 요청
-    - /score/remove : POST
+    - /score/remove : POST --> 학습용 GET..실무에서는 POST 사용
 
     4. 성적정보 상세 조회 요청
     - /score/detail : GET
@@ -29,16 +30,31 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/score")
+@RequiredArgsConstructor
 public class ScoreController {
 
     // 의존객체 설정
-    private ScoreRepository repository = new ScoreJdbcRepository();
+    private final ScoreRepository repository;
+
+//    @Autowired // 생략 가능
+//    public ScoreController(ScoreRepository repository) {
+//        this.repository = repository;
+//    }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(@RequestParam(defaultValue = "num") String sort, Model model) {
         System.out.println("/score/list : GET!");
 
-        List<Score> scoreList = repository.findAll();
+        List<Score> scoreList = repository.findAll(sort);
+
+//        자바에서 정렬
+//        switch (sort) {
+//            case "avg":
+//                scoreList = scoreList.stream()
+//                        .sorted(Comparator.comparing(Score::getAverage))
+//                        .collect(Collectors.toList());
+//        }
+
         model.addAttribute("sList", scoreList);
         return "score/score-list";
     }
@@ -55,11 +71,16 @@ public class ScoreController {
         // 포워딩이 아닌 리다이렉트로 재요청을 넣어야 새롭게 디비를 조회
         return "redirect:/score/list"; // 요청URL
     }
-    @PostMapping("/remove")
-    public String remove() {
+
+    @GetMapping("/remove")
+    public String remove(@RequestParam("sn") long stuNum) {
         System.out.println("/score/remove : POST!");
-        return "score/";
+
+        repository.delete(stuNum);
+
+        return "redirect:/score/list";
     }
+
     @GetMapping("/detail")
     public String detail(Long stuNum, Model model) {
         System.out.println("/score/detail : GET!");
@@ -73,7 +94,6 @@ public class ScoreController {
         int[] result = repository.findRankByStuNum(stuNum);
         model.addAttribute("rank", result[0]);
         model.addAttribute("count", result[1]);
-
 
         return "score/score-detail";
     }

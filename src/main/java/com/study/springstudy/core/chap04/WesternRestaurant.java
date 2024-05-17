@@ -2,7 +2,7 @@ package com.study.springstudy.core.chap04;
 
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("www")
 public class WesternRestaurant implements Restaurant {
 
     // 담당 쉐프

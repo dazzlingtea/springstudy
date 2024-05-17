@@ -11,12 +11,15 @@ public interface ScoreRepository {
     boolean save(Score score);
 
     // 저장소에서 데이터 전체조회
-    List<Score> findAll();
+    List<Score> findAll(String sort);
 
     // 저장소에서 데이터 개별조회
     Score findOne(long stuNum);
 
     // 저장소에서 데이터 삭제하기
+    default boolean delete(long stuNum) {
+        return false;
+    }
 
     int[] findRankByStuNum(long stuNum);
 }
