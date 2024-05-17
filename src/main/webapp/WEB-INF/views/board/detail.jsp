@@ -108,12 +108,12 @@
 </head>
 <body>
 <div id="wrap" class="form-container">
-    <h1>1번 게시물 내용~ </h1>
-    <h2># 작성일자: 2023-03-31</h2>
-    <label for="title">제목</label>
+    <h1>${b.boardNo}번 게시물 내용</h1>
+    <h2># 작성일자: ${b.regDateTime}</h2>
+    <label for="title">${b.title}</label>
     <input type="text" id="title" name="title" value="메롱롱" readonly>
     <label for="content">내용</label>
-    <div id="content">ㅇㅇㅇㅇㅇ</div>
+    <div id="content">${b.content}</div>
     <div class="buttons">
         <button class="list-btn" type="button" onclick="window.location.href='/board/list'">목록</button>
     </div>

@@ -32,34 +32,34 @@
     </div>
 
     <div class="card-container">
-
+      <c:forEach var="b" items="${bList}">
         <div class="card-wrapper">
-            <section class="card" data-bno="1">
+            <section class="card" data-bno="${b.boardNo}">
                 <div class="card-title-wrapper">
-                    <h2 class="card-title">메롱메롱</h2>
+                    <h2 class="card-title">${b.title}</h2>
                     <div class="time-view-wrapper">
                         <div class="time">
                             <i class="far fa-clock"></i>
-                            2023-03-31</div>
+                            ${b.regDateTime}</div>
                         <div class="view">
                             <i class="fas fa-eye"></i>
-                            <span class="view-count">0</span>
+                            <span class="view-count">${b.viewCount}</span>
                         </div>
                     </div>
                 </div>
                 <div class="card-content">
 
-                    djsfldjsfsdf
+                    ${b.content}
 
                 </div>
             </section>
             <div class="card-btn-group">
-                <button class="del-btn" data-href="#">
+                <button class="del-btn" data-href="/board/delete?bno=${b.boardNo}">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         </div>
-
+      </c:forEach>
 
     </div>
 

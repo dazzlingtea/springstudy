@@ -15,21 +15,33 @@ public class BoardSpringJdbcRepository implements BoardRepository {
 
     @Override
     public List<Board> findAll() {
-        return List.of();
+        String sql = "select * from tbl_board";
+        return template.query(sql, (rs, n) -> new Board(rs));
     }
 
     @Override
     public Board findOne(int boardNo) {
-        return null;
+        String sql = "select * from tbl_board where board_no = ?";
+        return template.queryForObject(sql, (rs, n) -> new Board(rs), boardNo);
     }
 
     @Override
     public boolean save(Board board) {
-        return false;
+        String sql = "insert into tbl_board (title, content, writer) values(?,?,?)";
+        return template.update(sql, board.getTitle(), board.getContent(), board.getWriter()) == 1;
     }
 
     @Override
     public boolean delete(int boardNo) {
-        return false;
+        String sql = "delete from tbl_board where board_no=?";
+        return template.update(sql, boardNo) == 1;
     }
+
+    @Override
+    public boolean updateViewCount(Board board) {
+        String sql = "update tbl_board set view_count = ? where board_no = ?";
+        return template.update(sql, board.getViewCount() + 1, board.getBoardNo()) == 1;
+    }
+
+
 }
