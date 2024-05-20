@@ -7,7 +7,7 @@
     <title>Web Study</title>
     <style>
         body {
-            background: url("/assets/img/mymelody.png") no-repeat center/contain;
+            background: url('/assets/img/mymelody.png') no-repeat center/contain;
         }
     </style>
 </head>
