@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap03.controller;
 
 import com.study.springstudy.springmvc.chap03.dto.ScoreDetailResponseDto;
 import com.study.springstudy.springmvc.chap03.dto.ScoreListResponseDto;
+import com.study.springstudy.springmvc.chap03.dto.ScoreModifyRequestDto;
 import com.study.springstudy.springmvc.chap03.dto.ScorePostDto;
 import com.study.springstudy.springmvc.chap03.service.ScoreService;
 import lombok.RequiredArgsConstructor;
@@ -81,5 +82,24 @@ public class ScoreController {
         model.addAttribute("s", dto);
 
         return "score/score-detail";
+    }
+
+    // 수정 화면 열기 요청
+    @GetMapping("/modify")
+    public String modify(long stuNum, Model model) {
+        ScoreDetailResponseDto dto = service.retrieve(stuNum);
+        model.addAttribute("s", dto);
+        return "score/score-modify";
+    }
+
+    // 수정 데이터 반영 요청
+    @PostMapping("/modify")
+    public String modify(ScoreModifyRequestDto dto) {
+        // 1. 수정을 원하는 새로운 데이터 읽기 (국영수+학번)
+        System.out.println("dto = " + dto);
+        // 2. 서비스에게 수정 위임
+        service.update(dto);
+
+        return "redirect:/score/detail?stuNum=" + dto.getStuNum();
     }
 }

@@ -74,4 +74,13 @@ public class ScoreSpringJdbcRepository  implements ScoreRepository{
         String sql = "DELETE FROM tbl_score WHERE stu_num = ?";
         return template.update(sql, stuNum) == 1;
     }
+
+    @Override
+    public boolean updateScore(Score s) {
+        String sql = "UPDATE tbl_score " +
+                "SET kor = ?, eng = ?, math = ?, total = ?, average = ?, grade = ? " +
+                "WHERE stu_num = ?";
+        return template.update(sql, s.getKor(), s.getEng(), s.getMath()
+                , s.getTotal(), s.getAverage(), s.getGrade().toString(), s.getStuNum()) == 1;
+    }
 }

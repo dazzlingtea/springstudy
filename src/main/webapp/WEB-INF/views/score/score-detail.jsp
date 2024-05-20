@@ -82,7 +82,7 @@
     </ul>
     <div class="btn-group">
       <a class="list-btn" href="/score/list">목록</a>
-      <a class="mod-btn" href="#">수정</a>
+      <a class="mod-btn" href="/score/modify?stuNum=${s.stuNum}">수정</a>
     </div>
   </section>
 
