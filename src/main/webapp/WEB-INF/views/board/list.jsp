@@ -34,7 +34,7 @@
     <div class="card-container">
       <c:forEach var="b" items="${bList}">
         <div class="card-wrapper">
-            <section class="card" data-bno="${b.boardNo}">
+            <section class="card" data-bno="${b.bno}">
                 <div class="card-title-wrapper">
                     <h2 class="card-title">${b.shortTitle}</h2>
                     <div class="time-view-wrapper">
