@@ -77,7 +77,8 @@
       <li># 총점: ${s.total}점</li>
       <li># 평균: ${s.average}점</li>
       <li># 학점: ${s.grade}</li>
-      <li># 석차: ${rank}/${count}</li>
+<%--      <li># 석차: ${rank}/${count}</li>--%>
+      <li># 석차: ${s.rank}/${s.totalCount}</li>
     </ul>
     <div class="btn-group">
       <a class="list-btn" href="/score/list">목록</a>
