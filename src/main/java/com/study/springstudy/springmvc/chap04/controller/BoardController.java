@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
+import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
@@ -79,9 +80,14 @@ public class BoardController {
     // 5. 게시글 상세 조회 요청 (/board/detail : GET)
     @GetMapping("/detail")
     public String detail(int bno, Model model) {
-        Board board = repository.findOne(bno);
-        repository.updateViewCount(board);
-        model.addAttribute("b", board);
+
+        // 1. 상세조회하고 싶은 글번호를 읽기
+        // 2. 데이터베이스로부터 해당 글번호 데이터 조회하기
+        Board b = repository.findOne(bno);
+        if(b != null) repository.upViewCount(bno);
+
+        // 3. jsp 파일에 조회한 데이터 보내기
+        model.addAttribute("bbb", new BoardDetailResponseDto(b));
 //        repository.
         return "board/detail";
     }

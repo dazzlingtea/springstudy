@@ -38,9 +38,11 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public boolean updateViewCount(Board board) {
-        String sql = "update tbl_board set view_count = ? where board_no = ?";
-        return template.update(sql, board.getViewCount() + 1, board.getBoardNo()) == 1;
+    public boolean upViewCount(int boardNo) {
+        String sql = "update tbl_board " +
+                "set view_count = view_count + 1 " +
+                "where board_no = ?";
+        return template.update(sql, boardNo) == 1;
     }
 
 
