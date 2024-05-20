@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardSpringJdbcRepository implements BoardRepository {
+public class BoardRepositoryImpl implements BoardRepository {
 
     private final JdbcTemplate template;
 

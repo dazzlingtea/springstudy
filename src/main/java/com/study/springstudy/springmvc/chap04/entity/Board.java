@@ -1,6 +1,6 @@
 package com.study.springstudy.springmvc.chap04.entity;
 
-import com.study.springstudy.springmvc.chap04.dto.BoardPostDto;
+import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import lombok.*;
 
 import java.sql.ResultSet;
@@ -29,7 +29,7 @@ public class Board {
         this.regDateTime = rs.getTimestamp("reg_date_time").toLocalDateTime();
     }
 
-    public Board(BoardPostDto dto) throws SQLException {
+    public Board(BoardWriteRequestDto dto) throws SQLException {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.writer = dto.getWriter();

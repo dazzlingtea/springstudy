@@ -16,10 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Rollback
-class BoardSpringJdbcRepositoryTest {
+class BoardRepositoryImplTest {
 
     @Autowired
-    private BoardSpringJdbcRepository repository;
+    private BoardRepositoryImpl repository;
 
     @BeforeEach
     void setUp() {
@@ -69,6 +69,7 @@ class BoardSpringJdbcRepositoryTest {
         boolean flag = repository.save(b);
         //then
         assertTrue(flag);
+        assertEquals(6, repository.findAll().size());
     }
 
     @Test
@@ -80,6 +81,7 @@ class BoardSpringJdbcRepositoryTest {
         boolean flag = repository.delete(id);
         //then
         assertTrue(flag);
+        assertEquals(4, repository.findAll().size());
     }
 
 
