@@ -1,9 +1,6 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
-import com.study.springstudy.springmvc.chap04.dto.BoardDetailResponseDto;
-import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
-import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @Controller
 @RequestMapping("/board")
@@ -28,10 +24,8 @@ public class BoardController {
     @GetMapping("/list")
     public String list(Model model) {
 
-        List<BoardListResponseDto> bList = service.findAll();
-
         // 3. jsp파일에 해당 목록데이터를 보냄
-        model.addAttribute("bList", bList);
+        model.addAttribute("bList", service.findAll());
 
         return "board/list";
     }
@@ -66,14 +60,9 @@ public class BoardController {
 
         // 1. 상세조회하고 싶은 글번호를 읽기
         // 2. 데이터베이스로부터 해당 글번호 데이터 조회하기
-        Board b = service.findOne(bno);
-        BoardDetailResponseDto dto = null;
-        if (b != null) {
-            dto = service.upView(bno);
-        }
 
         // 3. jsp 파일에 조회한 데이터 보내기
-        model.addAttribute("bbb", dto);
+        model.addAttribute("bbb", service.upView(bno));
 //        repository.
         return "board/detail";
     }
