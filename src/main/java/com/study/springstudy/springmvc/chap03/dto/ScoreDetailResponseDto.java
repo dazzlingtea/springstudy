@@ -1,10 +1,13 @@
 package com.study.springstudy.springmvc.chap03.dto;
 
 import com.study.springstudy.springmvc.chap03.entity.Score;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
+@AllArgsConstructor
 public class ScoreDetailResponseDto {
 
     // 상세정보 화면을 렌더링하기 위한 데이터

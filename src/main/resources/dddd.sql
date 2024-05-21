@@ -40,3 +40,21 @@ CREATE TABLE tbl_board (
     view_count INT(8) default 0,
     reg_date_time DATETIME default current_timestamp
 );
+
+SELECT A.stu_num, A.rank, A.cnt
+FROM (SELECT *,
+             RANK() OVER (ORDER BY average DESC) AS "rank",
+             COUNT(*) OVER() AS cnt
+      FROM tbl_score) A
+WHERE A.stu_num = 1;
+
+SELECT *,
+       RANK() OVER (ORDER BY average DESC) AS "rank",
+       COUNT(*) OVER() AS cnt
+from tbl_score;
+
+SELECT *,
+       RANK() OVER (ORDER BY average DESC) AS "rank",
+       COUNT(*) OVER() AS cnt
+from tbl_score
+WHERE stu_num = 1;
