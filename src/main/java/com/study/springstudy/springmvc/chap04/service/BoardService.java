@@ -21,6 +21,9 @@ public class BoardService {
     public List<BoardListResponseDto> findList() {
         List<Board> boards = mapper.findAll();
 
+        // 조회해온 게시물 리스트에서 각 게시물들의 조회수를 확인하여
+        // 조회수가 5이상인 게시물에 특정 마킹 (dto 내부에서)
+
         return boards.stream()
                 .map(BoardListResponseDto::new)
                 .collect(Collectors.toList());

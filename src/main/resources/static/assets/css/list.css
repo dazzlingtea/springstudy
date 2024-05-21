@@ -214,3 +214,9 @@
     background-color: #dd1111;
     border-radius: 4px;
 }
+
+/*.card-container .card .card-title-wrapper .time-view-wrapper>div*/
+.card-container .card .card-title-wrapper .time-view-wrapper>div.hit {
+    background: linear-gradient(135deg, #efffaa, lightyellow);
+    font-weight: 700;
+}
