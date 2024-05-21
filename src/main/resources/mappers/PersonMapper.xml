@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- mapper 파일은 실행할 SQL 을 적는 파일 -->
+<!-- 생성한 mapper 파일은 mybatis-config.xml 에 사용등록을 해야함. -->
+
+<!-- namespace 속성에는 사용할 인터페이스의 풀네임(패키지+인터페이스명)을 적음 -->
+<mapper namespace="com.study.springstudy.database.chap02.PersonMapper">
+<!--    id 속성에 인터페이스의 추상메서드명을 적는다. -->
+<!--    인터페이스 추상메서드 매개변수의 필드명 사용. -->
+    <insert id="save">
+        INSERT INTO tbl_person
+            (id, person_name, person_age)
+        VALUES
+            (#{id}, #{personName}, #{personAge})
+    </insert>
+    <!-- 객체가 아닌 파라미터는 변수명을 사용 -->
+    <delete id="delete">
+        DELETE FROM tbl_person
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE tbl_person
+        SET person_age = #{personAge}, person_name = #{personName}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findAll" resultType="person">
+        SELECT * FROM tbl_person
+    </select>
+    <select id="findOne" resultType="person">
+        SELECT * FROM tbl_person
+        WHERE id = #{id}
+    </select>
+    <select id="findNames" resultType="string">
+        SELECT person_name from tbl_person
+    </select>
+    <select id="count" resultType="int">
+        SELECT COUNT(*) from tbl_person
+    </select>
+
+</mapper>
