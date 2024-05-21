@@ -6,10 +6,12 @@
 <mapper namespace="com.study.springstudy.springmvc.chap04.mapper.BoardMapper">
     <select id="findAll" resultType="board">
         select * from tbl_board
+        ORDER BY board_no DESC
     </select>
 
     <select id="findOne" resultType="board">
-        select * from tbl_board where board_no = #{boardNo}
+        select * from tbl_board
+        where board_no = #{boardNo}
     </select>
 
     <insert id="save">

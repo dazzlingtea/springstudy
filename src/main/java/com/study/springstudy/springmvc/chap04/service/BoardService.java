@@ -18,7 +18,7 @@ public class BoardService {
 
     private final BoardMapper mapper;
 
-    public List<BoardListResponseDto> findAll() {
+    public List<BoardListResponseDto> findList() {
         List<Board> boards = mapper.findAll();
 
         return boards.stream()
@@ -26,12 +26,12 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
     public boolean register(BoardWriteRequestDto dto) throws SQLException {
-
-        Board board = new Board(dto);
-        return mapper.save(board);
+        Board b = dto.toEntity();
+        return mapper.save(b);
     }
 
     public boolean delete(int bno) throws SQLException {
+        // 삭제권한 확인 시 여기에 작성
         return mapper.delete(bno);
     }
     public Board findOne(int bno) throws SQLException {
@@ -44,6 +44,11 @@ public class BoardService {
         } else {
             return null;
         }
+    }
+    public BoardDetailResponseDto detail(int bno) throws SQLException {
+        Board b = findOne(bno);
+        if(b != null) mapper.upViewCount(bno);
+        return new BoardDetailResponseDto(b);
     }
 
 }

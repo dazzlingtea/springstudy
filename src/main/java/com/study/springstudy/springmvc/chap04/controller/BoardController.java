@@ -24,8 +24,7 @@ public class BoardController {
     @GetMapping("/list")
     public String list(Model model) {
 
-        // 3. jsp파일에 해당 목록데이터를 보냄
-        model.addAttribute("bList", service.findAll());
+        model.addAttribute("bList", service.findList());
 
         return "board/list";
     }
@@ -41,6 +40,7 @@ public class BoardController {
     // -> 목록조회 요청 리다이렉션
     @PostMapping("/write")
     public String write(BoardWriteRequestDto dto) throws SQLException {
+
         service.register(dto);
         return "redirect:/board/list";
     }
@@ -58,12 +58,8 @@ public class BoardController {
     @GetMapping("/detail")
     public String detail(int bno, Model model) throws SQLException {
 
-        // 1. 상세조회하고 싶은 글번호를 읽기
-        // 2. 데이터베이스로부터 해당 글번호 데이터 조회하기
+        model.addAttribute("bbb", service.detail(bno));
 
-        // 3. jsp 파일에 조회한 데이터 보내기
-        model.addAttribute("bbb", service.upView(bno));
-//        repository.
         return "board/detail";
     }
 
