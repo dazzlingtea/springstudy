@@ -13,7 +13,7 @@ public class PageMaker {
     private static final int PAGE_COUNT = 10;
 
     // 페이지 시작번호와 끝번호
-    private int begin, end;
+    private int begin, end, finalPage;
 
     // 이전, 다음버튼 활성화 여부
     private boolean prev, next;
@@ -27,6 +27,7 @@ public class PageMaker {
     public PageMaker(Page page, int totalCount) {
         this.pageInfo = page;
         this.totalCount = totalCount;
+        System.out.println(page.getPageNo());
         makePageInfo();
     }
 
@@ -74,6 +75,7 @@ public class PageMaker {
             올림(35.1) = 36
          */
         int finalPage = (int) (Math.ceil((double) totalCount / pageInfo.getAmount()));
+        this.finalPage = finalPage;
         if(finalPage < this.end) {
             this.end = finalPage;
         }
