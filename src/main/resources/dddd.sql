@@ -65,4 +65,9 @@ select * from tbl_board
 order by board_no desc
 limit 30, 10
 ;
-
+select * from tbl_board
+WHERE title LIKE'%3%'
+    OR content LIKE CONCAT('%', '3' ,'%')
+order by board_no desc
+limit 0, 6
+;

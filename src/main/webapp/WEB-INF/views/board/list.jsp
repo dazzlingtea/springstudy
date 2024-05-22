@@ -39,6 +39,29 @@
         <button class="add-btn">새 글 쓰기</button>
     </div>
 
+
+    <div class="top-section">
+        <!-- 검색창 영역 -->
+        <div class="search">
+            <form action="/board/list" method="get">
+
+                <select class="form-select" name="" id="search-type">
+                    <option value="title" selected>제목</option>
+                    <option value="content">내용</option>
+                    <option value="writer">작성자</option>
+                    <option value="tc">제목+내용</option>
+                </select>
+
+                <input type="text" class="form-control" name="">
+
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+
+            </form>
+        </div>
+    </div>
+
     <div class="card-container">
       <c:forEach var="b" items="${bList}">
         <div class="card-wrapper">
@@ -241,7 +264,7 @@
         // 1. 현재 위치한 페이지 번호를 알아낸다.
         // -> 주소창 페이지 파라미터 숫자를 읽거나
         //   서버에서 내려준 페이지번호를 읽는다.
-        const currentPage = '${maker.pageInfo.pageNo}';
+        const currentPage = ${maker.pageInfo.pageNo}; // number
 
         // 2. 해당 페이지번호와 일치하는 li태그를 탐색한다.
         // 3. 해당 li태그에 class=active를 추가한다.

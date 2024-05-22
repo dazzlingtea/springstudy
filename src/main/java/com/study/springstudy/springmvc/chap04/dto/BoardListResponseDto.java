@@ -35,7 +35,7 @@ public class BoardListResponseDto {
         this.date = dateFormatting(regTime);
         this.view = b.getViewCount();
         this.hit = this.view > 5;
-        this.newArticle = !regTime.plusMinutes(5).isBefore(LocalDateTime.now());
+        this.newArticle = !regTime.plusMinutes(10).isBefore(LocalDateTime.now());
     }
 
     private String dateFormatting(LocalDateTime regDateTime) {
