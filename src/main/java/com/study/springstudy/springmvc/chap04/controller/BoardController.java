@@ -1,6 +1,8 @@
 package com.study.springstudy.springmvc.chap04.controller;
 
 import com.study.springstudy.springmvc.chap04.common.Page;
+import com.study.springstudy.springmvc.chap04.common.PageMaker;
+import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
@@ -25,7 +28,13 @@ public class BoardController {
     @GetMapping("/list")
     public String list(Page page, Model model) {
 
-        model.addAttribute("bList", service.findList(page));
+        List<BoardListResponseDto> bList = service.findList(page);
+
+        // 페이지 정보를 생성하여 JSP에게 전송
+        PageMaker maker = new PageMaker(page, service.getCount());
+
+        model.addAttribute("bList", bList);
+        model.addAttribute("maker", maker);
 
         return "board/list";
     }

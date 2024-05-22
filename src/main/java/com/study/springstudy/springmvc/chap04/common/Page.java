@@ -2,14 +2,33 @@ package com.study.springstudy.springmvc.chap04.common;
 
 import lombok.*;
 
-@Getter @Setter @ToString
+@Getter @ToString
 @EqualsAndHashCode
-@NoArgsConstructor
 @AllArgsConstructor
 public class Page {
 
     private int pageNo; // 클라이언트가 요청한 페이지번호
     private int amount; // 클라이언트가 요청한 한 페이지당 게시물 목록 수
+
+    public Page() {
+        this.pageNo = 1;
+        this.amount = 6;
+    }
+
+    public void setPageNo(int pageNo) {
+        if(pageNo < 1 || pageNo > Integer.MAX_VALUE) {
+            this.pageNo = 1;
+            return;
+        }
+        this.pageNo = pageNo;
+    }
+    public void setAmount(int amount) {
+        if(amount < 6 || amount > 60) {
+            this.amount = 6;
+            return;
+        }
+        this.amount = amount;
+    }
 
     /*
         만약에 한 페이지에 게시물을 10개씩 렌더링한다면
