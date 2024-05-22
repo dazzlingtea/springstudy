@@ -14,6 +14,7 @@ public class Search extends Page {
 
     public Search() {
         this.keyword = "";
+        System.out.println("Search 초기화");
     }
 
 }

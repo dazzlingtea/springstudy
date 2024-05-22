@@ -27,7 +27,6 @@ public class PageMaker {
     public PageMaker(Search page, int totalCount) {
         this.pageInfo = page;
         this.totalCount = totalCount;
-        System.out.println(page.getPageNo());
         makePageInfo();
     }
 
