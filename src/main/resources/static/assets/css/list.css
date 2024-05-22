@@ -217,6 +217,7 @@
 
 /*.card-container .card .card-title-wrapper .time-view-wrapper>div*/
 .card-container .card .card-title-wrapper .time-view-wrapper>div.hit {
-    background: linear-gradient(135deg, #efffaa, lightyellow);
+    background: linear-gradient(135deg, #e0fc79, lightyellow);
     font-weight: 700;
+    border: dashed 1px #e0fc79;
 }

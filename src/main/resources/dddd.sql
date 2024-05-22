@@ -58,3 +58,11 @@ SELECT *,
        COUNT(*) OVER() AS cnt
 from tbl_score
 WHERE stu_num = 1;
+
+# 페이징
+truncate table tbl_board;
+select * from tbl_board
+order by board_no desc
+limit 30, 10
+;
+
