@@ -55,7 +55,7 @@ public class BoardService {
         return new BoardDetailResponseDto(b);
     }
 
-    public int getCount(Search page) {
-        return mapper.count(page);
+    public int getCount(Search search) {
+        return mapper.count(search);
     }
 }

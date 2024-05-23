@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -26,7 +27,7 @@ public class BoardController {
 
     // 1. 목록 조회 요청 (/board/list : GET)
     @GetMapping("/list")
-    public String list(Search page, Model model) {
+    public String list(@ModelAttribute("s") Search page, Model model) {
 
         List<BoardListResponseDto> bList = service.findList(page);
 
@@ -36,6 +37,7 @@ public class BoardController {
 
         model.addAttribute("bList", bList);
         model.addAttribute("maker", maker);
+//        model.addAttribute("s", page);
 
         return "board/list";
     }
@@ -74,6 +76,6 @@ public class BoardController {
         return "board/detail";
     }
 
-    // 목록 조회땐 제목 8글자, 내용 10글자까지만 조회되고..상세조회하면 조회수 상승
+    // 목록 조회땐 제목 8글자, 내용 10글자까지만 조회되고..상세조회하면 조회수 상승 (DTO)
 
 }
