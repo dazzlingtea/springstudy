@@ -121,5 +121,11 @@
     </div>
 
 </div>
+
+<!-- 댓글 영역 -->
+<c:forEach var="r" items="${bbb.replies}">
+    <div>${r}</div>
+</c:forEach>
+
 </body>
 </html>
