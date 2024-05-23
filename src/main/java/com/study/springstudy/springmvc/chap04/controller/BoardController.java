@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -69,9 +70,15 @@ public class BoardController {
 
     // 5. 게시글 상세 조회 요청 (/board/detail : GET)
     @GetMapping("/detail")
-    public String detail(int bno, Model model) throws SQLException {
+    public String detail(int bno,
+                         Model model,
+                         HttpServletRequest request) throws SQLException {
 
         model.addAttribute("bbb", service.detail(bno));
+
+        // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
+        String ref = request.getHeader("Referer");
+        model.addAttribute("ref", ref);
 
         return "board/detail";
     }
