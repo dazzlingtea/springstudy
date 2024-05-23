@@ -46,13 +46,13 @@
             <form action="/board/list" method="get">
 
                 <select class="form-select" name="type" id="search-type">
-                    <option value="title" selected>제목</option>
+                    <option value="title">제목</option>
                     <option value="content">내용</option>
                     <option value="writer">작성자</option>
                     <option value="tc">제목+내용</option>
                 </select>
 
-                <input type="text" class="form-control" name="keyword">
+                <input type="text" class="form-control" name="keyword" value="${s.keyword}">
 
                 <button class="btn btn-primary" type="submit">
                     <i class="fas fa-search"></i>
@@ -70,42 +70,51 @@
     </div>
 
     <div class="card-container">
-      <c:forEach var="b" items="${bList}">
-        <div class="card-wrapper">
-            <section class="card" data-bno="${b.bno}">
-                <div class="card-title-wrapper">
-                    <h2 class="card-title">${b.shortTitle}</h2>
-                    <div class="time-view-wrapper">
-                        <div class="time">
-                            <i class="far fa-clock"></i>
-                            ${b.date}
-                        </div>
-                        <c:if test="${b.hit}">
-                            <div class="hit">HIT</div>
-                        </c:if>
-                        <c:if test="${b.newArticle}">
-                            <div class="hit">NEW</div>
-                        </c:if>
-                        <div class="view">
-                            <i class="fas fa-eye"></i>
-                            <span class="view-count">${b.view}</span>
+
+      <c:if test="${bList.size() == 0}">
+          <div class="empty">
+              검색 결과가 존재하지 않습니다.
+          </div>
+      </c:if>
+
+      <c:if test="${bList.size() > 0}">
+         <c:forEach var="b" items="${bList}">
+            <div class="card-wrapper">
+                <section class="card" data-bno="${b.bno}">
+                    <div class="card-title-wrapper">
+                        <h2 class="card-title">${b.shortTitle}</h2>
+                        <div class="time-view-wrapper">
+                            <div class="time">
+                                <i class="far fa-clock"></i>
+                                ${b.date}
+                            </div>
+                            <c:if test="${b.hit}">
+                                <div class="hit">HIT</div>
+                            </c:if>
+                            <c:if test="${b.newArticle}">
+                                <div class="hit">NEW</div>
+                            </c:if>
+                            <div class="view">
+                                <i class="fas fa-eye"></i>
+                                <span class="view-count">${b.view}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-content">
+                    <div class="card-content">
 
-                    ${b.shortContent}
+                        ${b.shortContent}
 
+                    </div>
+                </section>
+                <div class="card-btn-group">
+                    <button class="del-btn" data-href="/board/delete?bno=${b.bno}">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-            </section>
-            <div class="card-btn-group">
-                <button class="del-btn" data-href="/board/delete?bno=${b.bno}">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
-        </div>
-        <!-- end div.card-wrapper -->
-      </c:forEach>
+            <!-- end div.card-wrapper -->
+         </c:forEach>
+      </c:if>
 
     </div>
     <!-- end div.card-container -->
@@ -274,13 +283,30 @@
         const currentPage = ${maker.pageInfo.pageNo}; // number
 
         // 2. 해당 페이지번호와 일치하는 li태그를 탐색한다.
+        const $nowLi = document.querySelector(`.pagination li[data-page-num="\${currentPage}"]`);
+
         // 3. 해당 li태그에 class=active를 추가한다.
-        const $nowLi = document.querySelector(`.pagination li[data-page-num="\${currentPage}"]`)
-        $nowLi.classList.add('active');
+        // if($nowLi) $nowLi.classList.add('active');
+        $nowLi?.classList.add('active');
+
+    }
+
+    // 기존 검색 조건 option 태그 고정하기
+    function fixSearchOption() {
+        // 1. 방금 전 어떤 조건으로 검색했는지 값을 알아옴
+        const type = '${s.type}';
+        // console.log('type: '+type);
+
+        // 2. 해당 조건을 가진 option 태그를 검색
+        const $option = document.querySelector(`#search-type option[value='\${type}']`);
+
+        // 3. 해당 태그에 selected 속성 부여
+        $option?.setAttribute('selected', 'selected');
 
     }
 
     checkNowPage();
+    fixSearchOption();
 
 </script>
 
