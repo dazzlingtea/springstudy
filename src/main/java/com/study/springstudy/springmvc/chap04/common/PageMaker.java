@@ -24,7 +24,7 @@ public class PageMaker {
     // 현재 페이지 정보
     private Page pageInfo;
 
-    public PageMaker(Search page, int totalCount) {
+    public PageMaker(Page page, int totalCount) {
         this.pageInfo = page;
         this.totalCount = totalCount;
         makePageInfo();
