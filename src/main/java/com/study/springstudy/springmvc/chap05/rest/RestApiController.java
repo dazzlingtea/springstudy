@@ -81,10 +81,12 @@ public class RestApiController {
         return ResponseEntity
 //                .status(400)
                 .ok()            // 200
-//                .notFound()
+//                .badRequest()  // 400
+//                .notFound()    // 404
 //                .internalServerError() // 500
                 .headers(headers)
                 .body(people);
+//                .build(); // notFound()
     }
 
     @GetMapping("/bmi")
