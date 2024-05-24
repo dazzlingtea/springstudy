@@ -111,3 +111,6 @@ order by B.board_no DESC
 
 select * from tbl_reply
 where reply_no = 2;
+
+select * from tbl_reply
+where board_no = 101;
