@@ -60,7 +60,6 @@ public class BoardService {
         // 댓글 목록 조회
         List<Reply> replies = replyMapper.findAll(bno);
 
-
         BoardDetailResponseDto dto = new BoardDetailResponseDto(b);
         dto.setReplies(replies);
 

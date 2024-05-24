@@ -7,6 +7,6 @@
     <title>Web Study</title>
 </head>
 <body>
-    <h1>Spring으로 포워딩한 hello</h1>
+    <h1>Spring으로 포워딩한 hello.jsp</h1>
 </body>
 </html>
