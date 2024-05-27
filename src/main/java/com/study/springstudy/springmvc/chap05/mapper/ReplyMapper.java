@@ -23,4 +23,6 @@ public interface ReplyMapper {
     // 총 댓글 수 조회
     int count(long boarNo);
 
+    // 원본 글 번호
+    long findBno(long rno);
 }
