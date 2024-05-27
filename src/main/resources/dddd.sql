@@ -114,3 +114,6 @@ where reply_no = 2;
 
 select * from tbl_reply
 where board_no = 101;
+
+select * from tbl_reply
+where board_no = 100;
