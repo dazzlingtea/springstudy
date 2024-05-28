@@ -6,10 +6,7 @@ const fetchReplyDelete = async (rno) => {
   const res = await fetch(`${BASE_URL}/${rno}`, {
     method: 'DELETE'
   });
-
-  console.log('res: ', res);
   const replies = await res.json();
-  console.log('json: ', replies);
 
   renderReplies(replies);
 }
