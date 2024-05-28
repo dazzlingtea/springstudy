@@ -1,6 +1,7 @@
 
-import { fetchReplies } from "./getReply.js";
+import { fetchReplies, replyPageClickEvent } from "./getReply.js";
 import { fetchReplyPost } from "./postReply.js";
+import { replyDeleteClickEvent } from "./deleteReply.js";
 
 
 //===== 전역 변수 ======
@@ -14,6 +15,10 @@ fetchReplies();
 
 // 댓글 작성 이벤트 등록
 document.getElementById('replyAddBtn').addEventListener('click', e => {
-  // 댓글 동록 로직
+  // 댓글 등록 로직
   fetchReplyPost();
 }); 
+
+// 댓글 페이지 클릭이벤트 등록
+replyPageClickEvent();
+replyDeleteClickEvent();
