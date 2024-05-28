@@ -67,12 +67,12 @@ export function renderReplies(replies) {
   document.getElementById('replyData').innerHTML = tag;
 }
 
-export async function fetchReplies() {
+export async function fetchReplies(pageNo=1) {
 
   const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
 // console.log('글번호: ', bno);
 
-  const res = await fetch(`${BASE_URL}/${bno}`);
+  const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
   const replies = await res.json();
   
   // 댓글 목록 렌더링

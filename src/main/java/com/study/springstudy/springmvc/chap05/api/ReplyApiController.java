@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap05.api;
 
+import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyDetailDto;
 import com.study.springstudy.springmvc.chap05.service.ReplyService;
@@ -25,10 +26,13 @@ public class ReplyApiController {
     private final ReplyService replyService;
 
     // 댓글 목록 조회 요청
-    // URL: /api/v1/replies/원본글번호 - GET 목록조회
+    // URL: /api/v1/replies/원본글번호/page/페이지번호  - GET 목록조회
     // @PathVariable : URL 에 붙어있는 변수값을 읽는 어노테이션
-    @GetMapping("/{bno}")
-    public ResponseEntity<?> list(@PathVariable long bno) {
+    @GetMapping("/{bno}/page/{pageNo}")
+    public ResponseEntity<?> list(
+            @PathVariable long bno
+            , @PathVariable int pageNo
+    ) {
 
         if(bno == 0) {
             String msg = "글 번호는 0번이 될 수 없습니다.";
@@ -40,7 +44,7 @@ public class ReplyApiController {
 
         log.info("/api/v1/replies/{}", bno);
 
-        List<ReplyDetailDto> replies = replyService.getReplies(bno);
+        List<ReplyDetailDto> replies = replyService.getReplies(bno, new Page(pageNo,10));
 //        log.debug("first reply : {}", replies.get(0));
 
         /*
@@ -83,7 +87,7 @@ public class ReplyApiController {
 
         return ResponseEntity
                 .ok()
-                .body(replyService.getReplies(dto.getBno()));
+                .body(replyService.getReplies(dto.getBno(), new Page(1, 10)));
     }
 
     private Map<String, String> makeValidationMessageMap(BindingResult result) {
