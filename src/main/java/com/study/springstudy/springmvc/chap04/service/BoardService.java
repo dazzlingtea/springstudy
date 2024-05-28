@@ -8,7 +8,6 @@ import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
-import com.study.springstudy.springmvc.chap05.entity.Reply;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,10 +57,10 @@ public class BoardService {
         if(b != null) boardMapper.upViewCount(bno);
 
         // 댓글 목록 조회
-        List<Reply> replies = replyMapper.findAll(bno);
+//        List<Reply> replies = replyMapper.findAll(bno);
 
         BoardDetailResponseDto dto = new BoardDetailResponseDto(b);
-        dto.setReplies(replies);
+//        dto.setReplies(replies);
 
         return dto;
     }

@@ -41,7 +41,7 @@ public class ReplyApiController {
         log.info("/api/v1/replies/{}", bno);
 
         List<ReplyDetailDto> replies = replyService.getReplies(bno);
-        log.debug("first reply : {}", replies.get(0));
+//        log.debug("first reply : {}", replies.get(0));
 
         /*
             try {
