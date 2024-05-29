@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberMapperTest {
@@ -39,6 +39,8 @@ class MemberMapperTest {
         Member member = memberMapper.findOne(account);
         //then
         assertTrue(member.getName().equals("쿠로미"));
+        assertEquals("쿠로미", member.getName());
+        assertNotEquals("폼폼푸린", member.getName());
     }
     @Test
     @DisplayName("계정명이 kuromi인 회원은 중복확인 결과가 true이다.")
@@ -49,6 +51,16 @@ class MemberMapperTest {
         boolean flag = memberMapper.existById("account", account);
         //then
         assertTrue(flag);
+    }
+    @Test
+    @DisplayName("계정명이 newjeans 회원은 중복확인 결과가 false.")
+    void existTest2() {
+        //given
+        String account = "newjeans";
+        //when
+        boolean flag = memberMapper.existById("account", account);
+        //then
+        assertFalse(flag);
     }
 
 
