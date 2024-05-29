@@ -193,6 +193,8 @@ export async function fetchInfScrollReplies(pageNo=1) {
     document.getElementById('replyCnt').textContent = totalReplies;
     // 초기 댓글 reset
     document.getElementById('replyData').innerHTML = '';
+
+    setupInfiniteScroll();
   }
 
   // 댓글 목록 렌더링

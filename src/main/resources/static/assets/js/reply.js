@@ -2,6 +2,7 @@
 import { fetchReplies, setupInfiniteScroll, fetchInfScrollReplies } from "./getReply.js";
 import { fetchReplyPost } from "./postReply.js";
 import { replyDeleteClickEvent } from "./deleteReply.js";
+import { modifyReplyClickEvent } from "./modifyReply.js";
 
 
 //===== 전역 변수 ======
@@ -23,4 +24,8 @@ document.getElementById('replyAddBtn').addEventListener('click', e => {
 
 // 댓글 페이지 클릭이벤트 등록
 // replyPageClickEvent();
-// replyDeleteClickEvent();
+
+// 댓글 삭제 이벤트 등록
+replyDeleteClickEvent();
+// replyModifyClickEvent();
+modifyReplyClickEvent();
