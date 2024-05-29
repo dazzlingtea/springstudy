@@ -29,6 +29,6 @@ export const fetchReplyPost = async () => {
   
   // renderReplies(replies);
   // 무한스크롤 댓글 1페이지 렌더
-  fetchInfScrollReplies();
   window.scrollTo(0, 0);
+  await fetchInfScrollReplies();
 };

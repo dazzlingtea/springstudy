@@ -14,10 +14,10 @@ const fetchReplyDelete = async (rno) => {
   }
   // const replies = await res.json();
 
-  fetchInfScrollReplies();
   // append 는 2페이지부터라서... fetchInfScrollReplies로 변경
   // renderReplies(replies);
   window.scrollTo(0, 0); // 삭제 후 페이지 상단으로 이동
+  await fetchInfScrollReplies();
 }
 
 export function replyDeleteClickEvent() {
