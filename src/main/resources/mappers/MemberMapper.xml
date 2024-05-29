@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.springstudy.springmvc.chap05.mapper.MemberMapper">
+
+    // 회원 가입
+    boolean save(Member member);
+
+    // 회원 정보 개별 조회
+    Member findOne(String account);
+
+    // 중복 확인 (아이디, 이메일)
+
+    /**
+    *
+    * @param type - 어떤걸 중복검사할지 (ex: account OR email)
+    * @param keyword - 중복검사할 실제값
+    * @return - 중복이면 true, 아니면 false
+    */
+    boolean existById(String type, String keyword);
+
+</mapper>
