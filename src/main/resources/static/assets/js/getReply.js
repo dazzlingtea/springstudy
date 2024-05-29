@@ -102,7 +102,7 @@ export function renderReplies({pageInfo, replies}) {
   document.getElementById('replyData').innerHTML = tag;
 
   // 페이지 태그 렌더링
-  // renderPage(pageInfo);
+  renderPage(pageInfo);
 
 }
 
@@ -134,6 +134,44 @@ export function replyPageClickEvent() {
 
 let currentPage = 1; // 현재 무한스크롤시 진행되고 있는 페이지 번호
 let isFetching = false; // 데이터 불러오는 중에는 더 가져오지 않게 제어하기 위한 논리변수
+let totalReplies = 0;  // 총 댓글 수
+let loadedReplies = 0;  // 로딩된 댓글 수
+
+
+function appendReplies({ replies }) {
+
+  // 댓글 목록 렌더링
+  let tag = '';
+  if(replies && replies.length > 0) {
+    replies.forEach(({rno, writer, text, createAt}) => {
+      tag += `
+      <div id='replyContent' class='card-body' data-reply-id='${rno}'>
+          <div class='row user-block'>
+              <span class='col-md-3'>
+                  <b>${writer}</b>
+              </span>
+              <span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime(createAt)}</b></span>
+          </div><br>
+          <div class='row'>
+              <div class='col-md-9'>${text}</div>
+              <div class='col-md-3 text-right'>
+                  <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
+                  <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
+              </div>
+          </div>
+      </div>
+      `;
+      
+    });
+  } else {
+    tag = `<div id='replyContent' class='card-body'>댓글이 아직 없습니다! ㅠㅠ</div>`;
+  }
+  document.getElementById('replyData').innerHTML += tag;
+
+  // 로드된 댓글 수 업데이트
+  loadedReplies += replies.length;
+}
+
 
 // 서버에서 데이터를 페칭
 export async function fetchInfScrollReplies(pageNo=1) {
@@ -145,11 +183,26 @@ export async function fetchInfScrollReplies(pageNo=1) {
   const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
   const replyResponse = await res.json();
 
+  if(pageNo === 1) {
+    // 총 댓글 수 전역변수 값 세팅
+    totalReplies = replyResponse.pageInfo.totalCount
+    loadedReplies = 0; // 댓글 입력, 삭제시 다시 1페이지 로딩시 초기값으로 만들어주기
+    // 댓글 수 렌더링
+    document.getElementById('replyCnt').textContent = totalReplies;
+    // 초기 댓글 reset
+    document.getElementById('replyData').innerHTML = '';
+  }
+
   // 댓글 목록 렌더링
-  console.log(replyResponse);
+  appendReplies(replyResponse);
   currentPage = pageNo;
 
   isFetching = false; // 데이터를 다 가져온 후 false로 돌려놓음
+
+  // 댓글을 전부 가져왔다면 스크롤 이벤트 제거하기
+  if(loadedReplies >= totalReplies) {
+    window.removeEventListener('scroll', scrollHandler);
+  }
 }
 
 // 스크롤 이벤트 핸들러 함수
