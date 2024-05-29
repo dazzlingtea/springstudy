@@ -102,7 +102,7 @@ export function renderReplies({pageInfo, replies}) {
   document.getElementById('replyData').innerHTML = tag;
 
   // 페이지 태그 렌더링
-  renderPage(pageInfo);
+  // renderPage(pageInfo);
 
 }
 
@@ -130,3 +130,41 @@ export function replyPageClickEvent() {
   });
 }
 
+//=============== 무한 스크롤 전용 함수 ===============//
+
+let currentPage = 1; // 현재 무한스크롤시 진행되고 있는 페이지 번호
+let isFetching = false; // 데이터 불러오는 중에는 더 가져오지 않게 제어하기 위한 논리변수
+
+// 서버에서 데이터를 페칭
+export async function fetchInfScrollReplies(pageNo=1) {
+
+  if(isFetching) return; // 서버에서 데이터를 가져오는 중이면 return;
+  isFetching = true;
+
+  const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호  
+  const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
+  const replyResponse = await res.json();
+
+  // 댓글 목록 렌더링
+  console.log(replyResponse);
+  currentPage = pageNo;
+
+  isFetching = false; // 데이터를 다 가져온 후 false로 돌려놓음
+}
+
+// 스크롤 이벤트 핸들러 함수
+function scrollHandler(e) { 
+  // 스크롤이 최하단부로 내려갔을 때만 이벤트 발생시켜야 함
+  // 현재창에 보이는 세로길이 + 스크롤을 내린 길이 >= 브라우저 전체 세로길이
+  if(window.innerHeight+window.scrollY>= document.body.offsetHeight + 200) {
+    // console.log(e);
+    // 서버에서 데이터를 비동기로 불러와야 함
+    fetchInfScrollReplies(currentPage + 1);
+  }
+  
+}
+
+// 무한 스크롤 이벤트 생성 함수
+export function setupInfiniteScroll() {
+  window.addEventListener('scroll', scrollHandler)
+}
