@@ -129,3 +129,4 @@ CREATE TABLE tbl_member (
          reg_date DATETIME DEFAULT current_timestamp,
          CONSTRAINT pk_member PRIMARY KEY (account)
 );
+select * from tbl_member;

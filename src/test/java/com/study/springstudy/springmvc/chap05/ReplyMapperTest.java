@@ -1,5 +1,6 @@
 package com.study.springstudy.springmvc.chap05;
 
+import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springstudy.springmvc.chap05.entity.Reply;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
@@ -23,7 +24,7 @@ class ReplyMapperTest {
         //given
         long boardNo = 1;
         //when
-        List<Reply> replies = replyMapper.findAll(boardNo);
+        List<Reply> replies = replyMapper.findAll(boardNo, new Page());
 
         //then
         replies.forEach(System.out::println);
