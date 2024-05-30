@@ -27,5 +27,4 @@ document.getElementById('replyAddBtn').addEventListener('click', e => {
 
 // 댓글 삭제 이벤트 등록
 replyDeleteClickEvent();
-// replyModifyClickEvent();
 modifyReplyClickEvent();
