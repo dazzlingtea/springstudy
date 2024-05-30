@@ -52,7 +52,7 @@ class MemberMapperTest {
         //given
         String account = "kuromi";
         //when
-        boolean flag = memberMapper.existById("account", account);
+        boolean flag = memberMapper.existsById("account", account);
         //then
         assertTrue(flag);
     }
@@ -62,7 +62,7 @@ class MemberMapperTest {
         //given
         String account = "newjeans";
         //when
-        boolean flag = memberMapper.existById("account", account);
+        boolean flag = memberMapper.existsById("account", account);
         //then
         assertFalse(flag);
     }

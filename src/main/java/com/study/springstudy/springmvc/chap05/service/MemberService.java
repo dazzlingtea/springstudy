@@ -56,5 +56,9 @@ public class MemberService {
 
         return SUCCESS;
     }
+    // 아이디, 이메일 중복검사
+    public boolean checkIdentifier(String type, String keyword) {
+        return memberMapper.existsById(type, keyword);
+    }
 
 }

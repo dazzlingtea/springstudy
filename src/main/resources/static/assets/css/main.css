@@ -1,4 +1,4 @@
-m * {
+* {
     box-sizing: border-box;
 }
 
@@ -126,4 +126,11 @@ header .gnb ul li:hover,
 header .gnb ul li.active
 {
     color: #fff;
+}
+
+.warning {
+    color: red;
+}
+.success {
+    color: skyblue;
 }

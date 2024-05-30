@@ -21,7 +21,7 @@ public interface MemberMapper {
      * @param keyword - 중복검사할 실제값
      * @return - 중복이면 true, 아니면 false
      */
-    boolean existById(
+    boolean existsById(
             @Param("type") String type,
             @Param("keyword") String keyword);
 
