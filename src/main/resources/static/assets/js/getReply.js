@@ -180,6 +180,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
   if(isFetching) return; // 서버에서 데이터를 가져오는 중이면 return;
   isFetching = true;
   
+  console.log("무한스크롤 fetch 중");
 
   const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호  
   const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
@@ -203,6 +204,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
 
   isFetching = false; // 데이터를 다 가져온 후 false로 돌려놓음
   hideSpinner();
+  console.log("스크롤 fetch 완료");
 
   // 댓글을 전부 가져왔다면 스크롤 이벤트 제거하기
   if(loadedReplies >= totalReplies) {
@@ -211,7 +213,7 @@ export async function fetchInfScrollReplies(pageNo=1) {
 }
 
 // 스크롤 이벤트 핸들러 함수
-async function scrollHandler(e) { 
+async function scrollHandler(e) {
   // 스크롤이 최하단부로 내려갔을 때만 이벤트 발생시켜야 함
   // 현재창에 보이는 세로길이 + 스크롤을 내린 길이 >= 브라우저 전체 세로길이
   if(
@@ -221,8 +223,9 @@ async function scrollHandler(e) {
     // console.log(e);
     // 서버에서 데이터를 비동기로 불러와야 함
     // 2초의 대기열이 생성되면 다음 대기열 생성까지 2초를 기다려야 함
+    console.log("스크롤 이벤트 핸들러 함수 실행"); 
     showSpinner();
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 700));
     fetchInfScrollReplies(currentPage + 1);
   }
   
@@ -230,5 +233,6 @@ async function scrollHandler(e) {
 
 // 무한 스크롤 이벤트 생성 함수
 export function setupInfiniteScroll() {
+  console.log("스크롤이벤트 생성 함수 실행");
   window.addEventListener('scroll', scrollHandler)
 }
