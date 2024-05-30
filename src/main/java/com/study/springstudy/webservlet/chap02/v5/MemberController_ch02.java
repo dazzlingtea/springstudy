@@ -10,7 +10,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/chap02/v5/*")
-public class MemberController {
+public class MemberController_ch02 {
     private MemberMemoryRepo repo = MemberMemoryRepo.getInstance();
 
     // 회원등록 폼을 열어주는 요청
