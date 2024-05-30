@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
     @GetMapping("/sign-up")
-    public String signUp() {
-        log.info("sign-up GET: forwarding to sign-up.jsp");
-        return "members/sign-up";
+    public void signUp() {
+        log.info("/members/sign-up GET: forwarding to sign-up.jsp");
+//        return "members/sign-up";
     }
 
 }
