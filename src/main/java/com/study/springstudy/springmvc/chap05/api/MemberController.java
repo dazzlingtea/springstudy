@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/members")
 @Slf4j
@@ -57,25 +60,33 @@ public class MemberController {
     }
     // 로그인 요청 처리
     @PostMapping("/sign-in")
-    public String signIn(LoginDto dto, RedirectAttributes ra) {
+    public String signIn(LoginDto dto,
+                         RedirectAttributes ra,
+                         HttpServletRequest request) {
         log.info("/members/sign-in POST");
-        log.debug("parameters: {}", dto);
+        log.debug("parameter: {}", dto);
 
-        LoginResult result = memberService.authenticate(dto);
+        // 세션 얻기
+        HttpSession session = request.getSession();
+
+        LoginResult result = memberService.authenticate(dto, session);
 
         // 로그인 검증 결과를 JSP에게 보내기
         // Redirect시에 Redirect된 페이지에 데이터를 보낼 때는
-        // Model 객체를 사용할 수 없음
+        // Model객체를 사용할 수 없음
         // 왜냐면 Model객체는 request객체를 사용하는데 해당 객체는
         // 한번의 요청이 끝나면 메모리에서 제거된다. 그러나 redirect는
-        // 요청이 2번 발생하므로 다른 request객체를 jsp 가 사용하게 됨
-//        model.addAttribute("result", result);
+        // 요청이 2번 발생하므로 다른 request객체를 jsp가 사용하게 됨
+
+//        model.addAttribute("result", result); // (X)
         ra.addFlashAttribute("result", result);
 
-        if(result == LoginResult.SUCCESS) {
+        if (result == LoginResult.SUCCESS) {
             return "redirect:/index"; // 로그인 성공시
         }
+
         return "redirect:/members/sign-in";
     }
+
 
 }
