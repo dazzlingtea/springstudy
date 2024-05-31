@@ -8,15 +8,19 @@ import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     private final BoardMapper boardMapper;
@@ -32,13 +36,24 @@ public class BoardService {
                 .map(BoardListResponseDto::new)
                 .collect(Collectors.toList());
     }
-    public boolean register(BoardWriteRequestDto dto) throws SQLException {
+    // 등록 요청 중간처리
+    public boolean register(BoardWriteRequestDto dto, HttpSession session) throws SQLException {
         Board b = dto.toEntity();
+        // 계정명을 엔터티에 추가 - 세션에서 계정명 가져오기
+        b.setAccount(LoginUtil.getLoggedInUserAccount(session));
         return boardMapper.save(b);
     }
 
-    public boolean delete(int bno) throws SQLException {
+    public boolean delete(int bno, HttpSession session) throws SQLException {
         // 삭제권한 확인 시 여기에 작성
+//        String loginAccount = LoginUtil.getLoggedInUserAccount(session);
+//        Board b = boardMapper.findOne(bno);
+//
+//        if(!loginAccount.equals("ADMIN") && !b.getAccount().equals(loginAccount)) {
+//            log.debug("게시글 계정: "+b.getAccount()+" 로그인계정: "+loginAccount);
+//            return false;
+//        }
+
         return boardMapper.delete(bno);
     }
     public Board findOne(int bno) throws SQLException {

@@ -19,7 +19,8 @@ public class LoginUserInfoDto {
         this.account = member.getAccount();
         this.email = member.getEmail();
         this.nickName = member.getName(); // ** 처리 여기서
-        this.auth = member.getAuth().toString();
+        this.auth = member.getAuth().name();
+        System.out.println(this);
     }
 
 

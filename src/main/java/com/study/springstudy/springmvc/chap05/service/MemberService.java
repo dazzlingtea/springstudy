@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 
 import static com.study.springstudy.springmvc.chap05.service.LoginResult.*;
+import static com.study.springstudy.springmvc.util.LoginUtil.LOGIN;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class MemberService {
         session.setMaxInactiveInterval(60 * 60); // 세션 수명 1시간 설정
         log.debug("session time: {}", maxInactiveInterval);
 
-        session.setAttribute("login", new LoginUserInfoDto(foundMember));
+        session.setAttribute(LOGIN, new LoginUserInfoDto(foundMember));
 
         return SUCCESS;
     }

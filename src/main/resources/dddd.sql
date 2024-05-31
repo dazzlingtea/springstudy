@@ -130,3 +130,69 @@ CREATE TABLE tbl_member (
          CONSTRAINT pk_member PRIMARY KEY (account)
 );
 select * from tbl_member;
+
+-- 게시글 테이블과 댓글테이블에 회원 PK 컬럼 추가
+ALTER TABLE tbl_board
+ADD (account VARCHAR(50));
+
+ALTER TABLE tbl_reply
+ADD (account VARCHAR(50));
+
+select * from tbl_board;
+select * from tbl_reply;
+
+UPDATE tbl_member
+SET auth = 'ADMIN'
+WHERE account = 'admin';
+
+commit;
+select * from tbl_member;
+
+UPDATE tbl_board
+SET account = 'admin'
+WHERE account IS NULL
+;
+UPDATE tbl_reply
+SET account = 'admin'
+WHERE account IS NULL
+;
+commit;
+ALTER TABLE tbl_board
+ADD CONSTRAINT fk_board_member
+FOREIGN KEY (account)
+REFERENCES tbl_member (account)
+;
+SELECT *
+FROM tbl_board B
+LEFT OUTER JOIN tbl_member M
+ON B.account = M.account
+;
+select
+    B.board_no,
+    B.title,
+    B.content,
+    M.name as writer,
+    B.reg_date_time,
+    M.account
+from tbl_board B
+LEFT OUTER JOIN tbl_member M
+ON B.account = M.account
+where board_no = 98
+;
+
+SELECT
+    B.board_no,
+    B.title,
+    B.content,
+    B.writer,
+    B.reg_date_time,
+    B.view_count,
+    COUNT(R.reply_no) AS reply_count,
+    B.account
+FROM tbl_board B
+         LEFT OUTER JOIN tbl_reply R
+                         ON B.board_no = R.board_no
+GROUP BY B.board_no
+ORDER BY board_no DESC
+LIMIT 0, 6
+;

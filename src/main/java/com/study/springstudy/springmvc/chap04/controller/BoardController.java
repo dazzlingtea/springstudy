@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -53,18 +54,18 @@ public class BoardController {
     // 3. 게시글 등록 요청 (/board/write : POST)
     // -> 목록조회 요청 리다이렉션
     @PostMapping("/write")
-    public String write(BoardWriteRequestDto dto) throws SQLException {
+    public String write(BoardWriteRequestDto dto, HttpSession session) throws SQLException {
 
-        service.register(dto);
+        service.register(dto, session);
         return "redirect:/board/list";
     }
 
     // 4. 게시글 삭제 요청 (/board/delete : GET)
     // -> 목록조회 요청 리다이렉션
     @GetMapping("/delete")
-    public String delete(int bno) throws SQLException {
+    public String delete(int bno, HttpSession session) throws SQLException {
 
-        service.delete(bno);
+        service.delete(bno, session);
         return "redirect:/board/list";
     }
 

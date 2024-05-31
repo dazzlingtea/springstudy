@@ -32,7 +32,7 @@
             </c:if>
             <c:if test="${login != null}">
                 <li><a href="#">My Page</a></li>
-                <li><a href="#">Sign Out</a></li>
+                <li><a href="/members/sign-out">Sign Out</a></li>
             </c:if>
 
         </ul>
