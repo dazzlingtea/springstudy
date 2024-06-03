@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.springstudy.springmvc.chap05.mapper.LikeLogMapper">
+
+    <insert id="insertLike">
+        INSERT INTO like_log
+            (account, board_no)
+        VALUES
+            (#{account}, #{boardNo})
+    </insert>
+
+    <delete id="deleteLike">
+        DELETE FROM like_log
+        WHERE account = #{account}
+        AND board_no = #{bno}
+    </delete>
+
+    <select id="findLike" resultType="likeLog">
+        SELECT id, account, board_no
+        FROM like_log
+        WHERE account = #{account}
+        AND board_no = #{bno}
+    </select>
+
+    <select id="countBoardLike" resultType="int">
+        SELECT COUNT(*)
+        FROM like_log
+        GROUP BY board_no;
+    </select>
+
+</mapper>

@@ -146,6 +146,7 @@
         <!-- <iframe src="https://www.youtube.com/embed/phuiiNCxRMg" title="aespa 에스파 &#39;Supernova&#39; MV" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
     </div>
     <div class="buttons">
+        <button class="like-btn" type="button" data-like="${bbb.like}">❤</button>
         <button class="list-btn" type="button" onclick="window.location.href='${ref}'">목록</button>
     </div>
 
@@ -245,9 +246,41 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-
+</div>
 
     <script type="module" src="/assets/js/reply.js"></script>
+    <script>
+        const DETAIL_URL = 'http://localhost:8383/board/detail?bno=';
+
+        const fetchLikeMinus = async (e) => {
+            const $tag = document.getElementById('wrap');
+
+            e.target.style.color = 'white';
+            e.target.dataset.like = 'false';
+            const bno = $tag.dataset.bno;
+            console.log('좋아요 취소');
+
+            await fetch(DETAIL_URL+bno, {
+                method: 'DELETE'
+            })
+        }
+
+        document.querySelector('.like-btn').addEventListener('click', e => {
+            const $tag = document.getElementById('wrap');
+            if(e.target.dataset.like === 'true') {
+
+                fetchLikeMinus(e);
+
+            } else {
+                e.target.style.color = 'red';
+                e.target.dataset.like = 'true';
+                console.log('좋아요 클릭');
+
+            }
+
+        });
+
+    </script>
 
 </body>
 </html>

@@ -15,6 +15,7 @@
         <typeAlias type="com.study.springstudy.springmvc.chap05.entity.Reply" alias="reply"/>
         <typeAlias type="com.study.springstudy.springmvc.chap05.entity.Member" alias="member"/>
         <typeAlias type="com.study.springstudy.springmvc.chap05.entity.ViewLog" alias="viewLog"/>
+        <typeAlias type="com.study.springstudy.springmvc.chap05.entity.LikeLog" alias="likeLog"/>
     </typeAliases>
 
 <!--  SQL을 적어놓은 ...Mapper.xml 파일들을 사용등록하는 영역  -->
@@ -25,6 +26,7 @@
         <mapper resource="mappers/ReplyMapper.xml" />
         <mapper resource="mappers/MemberMapper.xml" />
         <mapper resource="mappers/ViewLogMapper.xml" />
+        <mapper resource="mappers/LikeLogMapper.xml" />
     </mappers>
 
 </configuration>

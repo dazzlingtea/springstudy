@@ -212,7 +212,7 @@ CREATE TABLE view_log (
     account VARCHAR(50),
     board_no INT,
     view_time DATETIME
-)
+);
 ALTER TABLE view_log
 ADD CONSTRAINT fk_member_viewlog
 FOREIGN KEY (account)
@@ -225,3 +225,28 @@ REFERENCES tbl_board (board_no);
 
 select *
 from view_log;
+
+-- 좋아요 기록 관리 테이블
+CREATE TABLE like_log (
+          id INT PRIMARY KEY auto_increment,
+          account VARCHAR(50),
+          board_no INT
+);
+ALTER TABLE like_log
+ADD CONSTRAINT fk_member_like_log
+FOREIGN KEY (account)
+REFERENCES tbl_member (account);
+
+ALTER TABLE like_log
+ADD CONSTRAINT fk_board_like_log
+FOREIGN KEY (board_no)
+REFERENCES tbl_board (board_no);
+
+ALTER TABLE like_log
+ADD reaction_date DATETIME DEFAULT current_timestamp;
+
+ALTER TABLE like_log
+RENAME COLUMN lik_date TO like_date;
+
+select *
+from like_log;
