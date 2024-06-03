@@ -15,9 +15,9 @@
     if(msg === 'authorization') {
       alert("권한이 없습니다!")
     }
-    const $before = document.getElementById('go-before');
+    document.getElementById('go-before')
     const ref = history.go(-2);
-    
+
   </script>
 </body>
 </html>

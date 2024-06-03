@@ -196,3 +196,12 @@ GROUP BY B.board_no
 ORDER BY board_no DESC
 LIMIT 0, 6
 ;
+-- 자동로그인 관련 컬럼 추가
+-- 쿠키에 저장한 값, 자동로그인 만료시간
+ALTER TABLE tbl_member
+ADD (session_id VARCHAR(255) default 'none');
+
+ALTER TABLE tbl_member
+ADD (limit_time DATETIME default current_timestamp);
+
+select * from tbl_member;

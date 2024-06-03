@@ -35,5 +35,10 @@
         </if>
     </select>
 
+    <update id="updateAutoLogin">
+        UPDATE tbl_member
+        SET session_id = #{sessionId}, limit_time = #{limitTime}
+        WHERE account = #{account}
+    </update>
 
 </mapper>
