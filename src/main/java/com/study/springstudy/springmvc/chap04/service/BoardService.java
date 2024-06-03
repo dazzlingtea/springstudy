@@ -19,11 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.study.springstudy.springmvc.util.LoginUtil.getLoggedInUserAccount;
 import static com.study.springstudy.springmvc.util.LoginUtil.isLoggedIn;
-import static com.study.springstudy.springmvc.util.LoginUtil.isMine;
 
 @Service
 @RequiredArgsConstructor
@@ -74,22 +75,38 @@ public class BoardService {
             return null;
         }
     }
-    public BoardDetailResponseDto detail(int bno, HttpServletRequest request, HttpServletResponse response) throws SQLException {
+    public BoardDetailResponseDto detail(int bno,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response) throws SQLException
+    {
         Board b = findOne(bno);
-        HttpSession session = request.getSession();
-        if(isLoggedIn(session)) {
-            String loginAccount = LoginUtil.getLoggedInUser(session).getAccount();
-            Cookie foundCookie = WebUtils.getCookie(request, "" + bno);
 
-            if(b != null && !isMine(b.getAccount(), loginAccount) && foundCookie == null) {
+        HttpSession session = request.getSession();
+
+        // 비회원이거나 본인 글이면 조회수 증가 방지
+        if(!isLoggedIn(session) || LoginUtil.isMine(b.getAccount(), getLoggedInUserAccount(session))) {
+            return new BoardDetailResponseDto(b);
+        }
+        // 조회수가 올라가는 조건 처리
+        if(shouldIncreaseViewCount(bno, request, response)) {
                 boardMapper.upViewCount(bno);
-                Cookie boardCookie = new Cookie(""+bno, session.getId());
-                boardCookie.setPath("/board/");
-                boardCookie.setMaxAge(60*60);
-                response.addCookie(boardCookie);
-            }
 
         }
+
+//        HttpSession session = request.getSession();
+//        if(isLoggedIn(session)) {
+//            String loginAccount = LoginUtil.getLoggedInUser(session).getAccount();
+//            Cookie foundCookie = WebUtils.getCookie(request, "" + bno);
+//
+//            if(b != null && !isMine(b.getAccount(), loginAccount) && foundCookie == null) {
+//                boardMapper.upViewCount(bno);
+//                Cookie boardCookie = new Cookie(""+bno, session.getId());
+//                boardCookie.setPath("/board/");
+//                boardCookie.setMaxAge(60*60);
+//                response.addCookie(boardCookie);
+//            }
+//
+//        }
 
         // 댓글 목록 조회
 //        List<Reply> replies = replyMapper.findAll(bno);
@@ -98,6 +115,37 @@ public class BoardService {
 //        dto.setReplies(replies);
 
         return dto;
+    }
+    // 조회수 증가 여부를 판단
+    /*
+        - 만약 내가 처음 조회한 상대방의 게시물이면 해당 게시물 번호로 쿠키를 생성
+        - 쿠키 안에는 생성 시간을 저장, 수명은 1시간으로 설정
+        - 이후 게시물 조회시 반복해서 쿠키를 조회한 후 해당 쿠키가 존재할 시 false를 리턴하여 조회수증가를 방지
+        - 쿠키 생성 예시
+          Cookie(name=view_101, 2024-06-03 14:11:30)
+     */
+    private boolean shouldIncreaseViewCount(int bno, HttpServletRequest request, HttpServletResponse response) {
+        // 쿠키 검사
+        String cookieName = "view_"+bno;
+        Cookie viewCookie = WebUtils.getCookie(request, cookieName); // 쿠키 없으면 null 리
+
+        // 이 게시물에 대한 쿠키가 존재 -> 아까 조회한 게시물
+        if(viewCookie != null) {
+            return false;
+        }
+
+        // 쿠키 생성
+        makeViewCookie(cookieName, response);
+
+        return true;
+    }
+
+    // 조회수 쿠키를 생성하고 클라이언트에 전송하는 메서드
+    private void makeViewCookie(String cookieName, HttpServletResponse response) {
+        Cookie newCookie = new Cookie(cookieName, LocalDateTime.now().toString());
+        newCookie.setPath("/"); // 쿠키 사용 범위 결정
+        newCookie.setMaxAge(60 * 60);
+        response.addCookie(newCookie);
     }
 
     public int getCount(Search search) {
