@@ -35,7 +35,7 @@ public class BoardController {
 
         // 페이지 정보를 생성하여 JSP에게 전송
         PageMaker maker = new PageMaker(page, service.getCount(page));
-        System.out.println("maker = " + maker);
+//        System.out.println("maker = " + maker);
 
         model.addAttribute("bList", bList);
         model.addAttribute("maker", maker);

@@ -254,6 +254,7 @@
         const $delBtn = e.target.closest('.card-wrapper')?.querySelector('.del-btn');
         if(!$delBtn) return;
         $delBtn.style.opacity = '1';
+        // ?(optional chaining): null 체크, 브라우저에 따라 안될수도
     }
 
     $cardContainer.onmousedown = e => {
