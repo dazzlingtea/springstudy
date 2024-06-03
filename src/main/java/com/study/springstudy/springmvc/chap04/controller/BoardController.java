@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
@@ -73,9 +74,10 @@ public class BoardController {
     @GetMapping("/detail")
     public String detail(int bno,
                          Model model,
-                         HttpServletRequest request) throws SQLException {
+                         HttpServletRequest request,
+                         HttpServletResponse response) throws SQLException {
 
-        model.addAttribute("bbb", service.detail(bno));
+        model.addAttribute("bbb", service.detail(bno, request, response));
 
         // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
         String ref = request.getHeader("Referer");

@@ -12,11 +12,18 @@ import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.study.springstudy.springmvc.util.LoginUtil.isLoggedIn;
+import static com.study.springstudy.springmvc.util.LoginUtil.isMine;
 
 @Service
 @RequiredArgsConstructor
@@ -67,9 +74,22 @@ public class BoardService {
             return null;
         }
     }
-    public BoardDetailResponseDto detail(int bno) throws SQLException {
+    public BoardDetailResponseDto detail(int bno, HttpServletRequest request, HttpServletResponse response) throws SQLException {
         Board b = findOne(bno);
-        if(b != null) boardMapper.upViewCount(bno);
+        HttpSession session = request.getSession();
+        if(isLoggedIn(session)) {
+            String loginAccount = LoginUtil.getLoggedInUser(session).getAccount();
+            Cookie foundCookie = WebUtils.getCookie(request, "" + bno);
+
+            if(b != null && !isMine(b.getAccount(), loginAccount) && foundCookie == null) {
+                boardMapper.upViewCount(bno);
+                Cookie boardCookie = new Cookie(""+bno, session.getId());
+                boardCookie.setPath("/board/");
+                boardCookie.setMaxAge(60*60);
+                response.addCookie(boardCookie);
+            }
+
+        }
 
         // 댓글 목록 조회
 //        List<Reply> replies = replyMapper.findAll(bno);
