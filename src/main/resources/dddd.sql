@@ -117,3 +117,136 @@ where board_no = 101;
 
 select * from tbl_reply
 where board_no = 100;
+
+
+-- 회원 관리 테이블
+CREATE TABLE tbl_member (
+         account VARCHAR(50),
+         password VARCHAR(150) NOT NULL,
+         name VARCHAR(50) NOT NULL,
+         email VARCHAR(100) NOT NULL UNIQUE,
+         auth VARCHAR(20) DEFAULT 'COMMON',
+         reg_date DATETIME DEFAULT current_timestamp,
+         CONSTRAINT pk_member PRIMARY KEY (account)
+);
+select * from tbl_member;
+
+-- 게시글 테이블과 댓글테이블에 회원 PK 컬럼 추가
+ALTER TABLE tbl_board
+ADD (account VARCHAR(50));
+
+ALTER TABLE tbl_reply
+ADD (account VARCHAR(50));
+
+select * from tbl_board;
+select * from tbl_reply;
+
+UPDATE tbl_member
+SET auth = 'ADMIN'
+WHERE account = 'admin';
+
+commit;
+select * from tbl_member;
+
+UPDATE tbl_board
+SET account = 'admin'
+WHERE account IS NULL
+;
+UPDATE tbl_reply
+SET account = 'admin'
+WHERE account IS NULL
+;
+commit;
+ALTER TABLE tbl_board
+ADD CONSTRAINT fk_board_member
+FOREIGN KEY (account)
+REFERENCES tbl_member (account)
+;
+SELECT *
+FROM tbl_board B
+LEFT OUTER JOIN tbl_member M
+ON B.account = M.account
+;
+select
+    B.board_no,
+    B.title,
+    B.content,
+    M.name as writer,
+    B.reg_date_time,
+    M.account
+from tbl_board B
+LEFT OUTER JOIN tbl_member M
+ON B.account = M.account
+where board_no = 98
+;
+
+SELECT
+    B.board_no,
+    B.title,
+    B.content,
+    B.writer,
+    B.reg_date_time,
+    B.view_count,
+    COUNT(R.reply_no) AS reply_count,
+    B.account
+FROM tbl_board B
+         LEFT OUTER JOIN tbl_reply R
+                         ON B.board_no = R.board_no
+GROUP BY B.board_no
+ORDER BY board_no DESC
+LIMIT 0, 6
+;
+-- 자동로그인 관련 컬럼 추가
+-- 쿠키에 저장한 값, 자동로그인 만료시간
+ALTER TABLE tbl_member
+ADD (session_id VARCHAR(255) default 'none');
+
+ALTER TABLE tbl_member
+ADD (limit_time DATETIME default current_timestamp);
+
+select * from tbl_member;
+
+-- 조회수 기록 관리 테이블
+CREATE TABLE view_log (
+    id INT PRIMARY KEY auto_increment,
+    account VARCHAR(50),
+    board_no INT,
+    view_time DATETIME
+);
+ALTER TABLE view_log
+ADD CONSTRAINT fk_member_viewlog
+FOREIGN KEY (account)
+REFERENCES tbl_member (account);
+
+ALTER TABLE view_log
+ADD CONSTRAINT fk_board_viewlog
+FOREIGN KEY (board_no)
+REFERENCES tbl_board (board_no);
+
+select *
+from view_log;
+
+-- 좋아요 기록 관리 테이블
+CREATE TABLE like_log (
+          id INT PRIMARY KEY auto_increment,
+          account VARCHAR(50),
+          board_no INT
+);
+ALTER TABLE like_log
+ADD CONSTRAINT fk_member_like_log
+FOREIGN KEY (account)
+REFERENCES tbl_member (account);
+
+ALTER TABLE like_log
+ADD CONSTRAINT fk_board_like_log
+FOREIGN KEY (board_no)
+REFERENCES tbl_board (board_no);
+
+ALTER TABLE like_log
+ADD reaction_date DATETIME DEFAULT current_timestamp;
+
+ALTER TABLE like_log
+RENAME COLUMN lik_date TO like_date;
+
+select *
+from like_log;

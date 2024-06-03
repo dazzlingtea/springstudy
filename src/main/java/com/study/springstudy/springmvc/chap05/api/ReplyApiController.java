@@ -1,6 +1,7 @@
 package com.study.springstudy.springmvc.chap05.api;
 
 import com.study.springstudy.springmvc.chap04.common.Page;
+import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyListDto;
 import com.study.springstudy.springmvc.chap05.service.ReplyService;
@@ -44,7 +45,7 @@ public class ReplyApiController {
 
         log.info("/api/v1/replies/{}", bno);
 
-        ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo,5));
+        ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo,10));
 //        log.debug("first reply : {}", replies.get(0));
 
         /*
@@ -109,6 +110,35 @@ public class ReplyApiController {
         return ResponseEntity
                 .ok()
                 .body(dtoList);
+    }
+
+    // 댓글 수정 요청
+//    @PutMapping // 전체수정
+//    @PatchMapping // 일부수정
+    /*
+        let obj = {age: 3, ..}
+        PUT - obj = {age: 10} 객체를 갈아끼움
+        PATCH - obj.age = 10;
+     */
+    // value 가 없으면 클래스 상단의 @RequestMapping("/api/v1/replies")
+    // 어차피 페이로드에서 보내줄거다
+    @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH})
+    public ResponseEntity<?> modify(
+            @Validated @RequestBody ReplyModifyDto dto
+            , BindingResult result
+    ) {
+        log.info("/api/v1/replies : PUT, PATCH");
+        log.debug("파라미터: {}", dto);
+
+        if(result.hasErrors()) {
+            Map<String, String> errors = makeValidationMessageMap(result);
+            return ResponseEntity
+                    .badRequest()
+                    .body(errors);
+        }
+        ReplyListDto replyListDto = replyService.modify(dto);
+        return ResponseEntity.ok().body(replyListDto);
+
     }
 
 }

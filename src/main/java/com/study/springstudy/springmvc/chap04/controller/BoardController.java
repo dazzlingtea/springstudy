@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class BoardController {
 
         // 페이지 정보를 생성하여 JSP에게 전송
         PageMaker maker = new PageMaker(page, service.getCount(page));
-        System.out.println("maker = " + maker);
+//        System.out.println("maker = " + maker);
 
         model.addAttribute("bList", bList);
         model.addAttribute("maker", maker);
@@ -53,18 +55,18 @@ public class BoardController {
     // 3. 게시글 등록 요청 (/board/write : POST)
     // -> 목록조회 요청 리다이렉션
     @PostMapping("/write")
-    public String write(BoardWriteRequestDto dto) throws SQLException {
+    public String write(BoardWriteRequestDto dto, HttpSession session) throws SQLException {
 
-        service.register(dto);
+        service.register(dto, session);
         return "redirect:/board/list";
     }
 
     // 4. 게시글 삭제 요청 (/board/delete : GET)
     // -> 목록조회 요청 리다이렉션
     @GetMapping("/delete")
-    public String delete(int bno) throws SQLException {
+    public String delete(int bno, HttpSession session) throws SQLException {
 
-        service.delete(bno);
+        service.delete(bno, session);
         return "redirect:/board/list";
     }
 
@@ -72,9 +74,10 @@ public class BoardController {
     @GetMapping("/detail")
     public String detail(int bno,
                          Model model,
-                         HttpServletRequest request) throws SQLException {
+                         HttpServletRequest request,
+                         HttpServletResponse response) throws SQLException {
 
-        model.addAttribute("bbb", service.detail(bno));
+        model.addAttribute("bbb", service.detail(bno, request, response));
 
         // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
         String ref = request.getHeader("Referer");

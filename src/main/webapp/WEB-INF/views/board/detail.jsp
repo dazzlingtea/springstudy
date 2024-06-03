@@ -1,31 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>게시판 글쓰기</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
-
-    <!-- reset -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
-
-    <!-- fontawesome css: https://fontawesome.com -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
-
-    <!-- bootstrap css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- bootstrap js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" defer></script>
-
-    <link rel="stylesheet" href="/assets/css/main.css">
-
+    <%@ include file="../include/static-head.jsp" %>
 
     <style>
 
@@ -39,6 +17,7 @@
             border-radius: 4px;
             font-size: 18px;
         }
+
         .form-container h1 {
             font-size: 40px;
             font-weight: 700;
@@ -47,18 +26,21 @@
             margin-bottom: 20px;
             color: #ffffff;
         }
+
         .form-container h2 {
             font-size: 30px;
             color: #222;
             text-align: center;
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             font-size: 20px;
         }
-        #title, #writer{
+
+        #title, #writer {
             font-size: 18px;
             width: 100%;
             padding: 8px;
@@ -68,6 +50,7 @@
             margin-bottom: 10px;
             background-color: rgba(255, 255, 255, 0.8);
         }
+
         #content {
             height: 400px;
             font-size: 18px;
@@ -84,11 +67,13 @@
             resize: none;
             height: 200px;
         }
+
         .buttons {
             display: flex;
             justify-content: flex-end;
             margin-top: 20px;
         }
+
         button {
             font-size: 20px;
             padding: 10px 20px;
@@ -101,12 +86,15 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s;
         }
+
         button.list-btn {
             background: #e61e8c;
         }
+
         button:hover {
             background-color: #3d8b40;
         }
+
         button.list-btn:hover {
             background: #e61e8c93;
         }
@@ -124,9 +112,26 @@
             background: #888 !important;
             color: #fff !important;
         }
+
+        /* 로딩 바 */
+        .spinner-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+        }
     </style>
 </head>
 <body>
+
+<%@ include file="../include/header.jsp" %>
+
 <div id="wrap" class="form-container" data-bno="${bbb.boardNo}">
     <h1>${bbb.boardNo}번 게시물 내용</h1>
     <h2># 작성일자: ${bbb.regDateTime}</h2>
@@ -141,6 +146,7 @@
         <!-- <iframe src="https://www.youtube.com/embed/phuiiNCxRMg" title="aespa 에스파 &#39;Supernova&#39; MV" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
     </div>
     <div class="buttons">
+        <button class="like-btn" type="button" data-like="${bbb.like}">❤</button>
         <button class="list-btn" type="button" onclick="window.location.href='${ref}'">목록</button>
     </div>
 
@@ -234,9 +240,47 @@
     </div>
 
     <!-- end replyModifyModal -->
-
+    <!-- 로딩 스피너 -->
+    <div class="spinner-container" id="loadingSpinner">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 </div>
+
     <script type="module" src="/assets/js/reply.js"></script>
+    <script>
+        const DETAIL_URL = 'http://localhost:8383/board/detail?bno=';
+
+        const fetchLikeMinus = async (e) => {
+            const $tag = document.getElementById('wrap');
+
+            e.target.style.color = 'white';
+            e.target.dataset.like = 'false';
+            const bno = $tag.dataset.bno;
+            console.log('좋아요 취소');
+
+            await fetch(DETAIL_URL+bno, {
+                method: 'DELETE'
+            })
+        }
+
+        document.querySelector('.like-btn').addEventListener('click', e => {
+            const $tag = document.getElementById('wrap');
+            if(e.target.dataset.like === 'true') {
+
+                fetchLikeMinus(e);
+
+            } else {
+                e.target.style.color = 'red';
+                e.target.dataset.like = 'true';
+                console.log('좋아요 클릭');
+
+            }
+
+        });
+
+    </script>
 
 </body>
 </html>

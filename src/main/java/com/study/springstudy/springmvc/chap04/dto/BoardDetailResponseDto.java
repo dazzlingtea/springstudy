@@ -16,6 +16,7 @@ public class BoardDetailResponseDto {
     private String title;
     private String content;
     private String regDateTime;
+    private boolean like;
 
     @Setter
     private List<Reply> replies;
