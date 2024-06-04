@@ -54,7 +54,8 @@ public class MemberController {
     // 로그인 양식 열기
     @GetMapping("/sign-in")
     public String signIn(HttpSession session
-        ,@RequestParam(required = false) String redirect)
+        ,@RequestParam(required = false) String redirect
+        , HttpServletRequest request)
     {
 
         // 로그인을 한 사람이 이 요청을 보내면 돌려보낸다.
@@ -62,6 +63,12 @@ public class MemberController {
 //            return "redirect:/";
 //        }
         session.setAttribute("redirect", redirect);
+
+        String uri = request.getHeader("Referer");
+        log.debug("로그인폼 이전 주소: {}", uri);
+        if(uri != null && !uri.contains("/sign-in")) {
+            session.setAttribute("prevPage", uri);
+        }
 
         log.info("/members/sign-in GET: forwarding to sign-in.jsp");
         return "members/sign-in";
@@ -75,8 +82,18 @@ public class MemberController {
         log.info("/members/sign-in POST");
         log.debug("parameter: {}", dto);
 
+
         // 세션 얻기
         HttpSession session = request.getSession();
+        String prevUri = (String) session.getAttribute("prevPage");
+        String prevQs = null;
+        if(prevUri != null) {
+            prevQs = prevUri.substring(22);
+        }
+
+
+        log.debug("로그인폼 이전 주소 : {}", session.getAttribute("prevPage"));
+        log.debug("이전 쿼리스트링: {}", prevQs);
 
         LoginResult result = memberService.authenticate(dto, session, response);
 
@@ -98,8 +115,7 @@ public class MemberController {
                 session.removeAttribute("redirect");
                 return "redirect:" + redirect;
             }
-
-            return "redirect:/index"; // 로그인 성공시
+            return prevQs != null ? "redirect:/"+prevQs :"redirect:/index"; // 로그인 성공시
         }
 
         return "redirect:/members/sign-in";
