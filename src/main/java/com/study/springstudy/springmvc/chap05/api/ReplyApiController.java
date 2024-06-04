@@ -5,6 +5,7 @@ import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyListDto;
 import com.study.springstudy.springmvc.chap05.service.ReplyService;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ public class ReplyApiController {
     public ResponseEntity<?> list(
             @PathVariable long bno
             , @PathVariable int pageNo
+            , HttpSession session
     ) {
 
         if(bno == 0) {
@@ -46,6 +49,7 @@ public class ReplyApiController {
         log.info("/api/v1/replies/{}", bno);
 
         ReplyListDto replies = replyService.getReplies(bno, new Page(pageNo,10));
+        replies.setLoginUser(LoginUtil.getLoggedInUser(session));
 //        log.debug("first reply : {}", replies.get(0));
 
         /*
@@ -66,6 +70,7 @@ public class ReplyApiController {
     @PostMapping
     public ResponseEntity<?> posts(@Validated @RequestBody ReplyPostDto dto
         , BindingResult result // 입력값 검증 결과 데이터를 갖고 있는 객체
+        , HttpSession session
     ) {
 
         log.info("/api/v1/replies : POST");
@@ -80,7 +85,7 @@ public class ReplyApiController {
                     .body(errors);
         }
 
-        boolean flag = replyService.register(dto);
+        boolean flag = replyService.register(dto, session);
 
         if(!flag) return ResponseEntity
                     .internalServerError()

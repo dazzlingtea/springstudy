@@ -267,3 +267,20 @@ UPDATE tbl_reply
 SET reply_writer = (SELECT name FROM tbl_member WHERE account = tbl_reply.account)
 WHERE tbl_reply.account IS NOT NULL
 ;
+
+ALTER TABLE tbl_reply
+ADD CONSTRAINT fk_reply_member
+foreign key (account)
+REFERENCES tbl_member(account)
+ON DELETE cascade
+;
+-- cascade 없는 reaction 때문에 좋아요 있는 게시글 삭제 불가
+
+SELECT * from tbl_reply
+WHERE board_no = 116;
+
+SELECT * from tbl_reply
+WHERE account = 'test';
+
+DELETE FROM tbl_reply
+WHERE account IS NULL;

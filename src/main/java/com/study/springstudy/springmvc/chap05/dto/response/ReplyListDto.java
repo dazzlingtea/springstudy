@@ -24,6 +24,9 @@ public class ReplyListDto {
             {RDD}, {}, {}
         ]
      */
+
+    @Setter
+    private LoginUserInfoDto loginUser;
     private PageMaker pageInfo;
     private List<ReplyDetailDto> replies;
 }

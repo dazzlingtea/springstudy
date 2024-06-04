@@ -14,7 +14,7 @@ export const BASE_URL = 'http://localhost:8383/api/v1/replies';
 // 댓글 목록 서버에서 불러오기
 // fetchReplies();
 fetchInfScrollReplies(); //  일단 1페이지 데이터 그려놓기
-setupInfiniteScroll(); // 무한 스크롤 이벤트 등록
+// setupInfiniteScroll(); // 무한 스크롤 이벤트 등록
 
 // 댓글 작성 이벤트 등록
 document.getElementById('replyAddBtn').addEventListener('click', e => {

@@ -15,6 +15,7 @@ export const fetchReplyPost = async () => {
     author: writerInput.value,
     bno: document.getElementById('wrap').dataset.bno
   };
+  console.log(payload);
 
   await callApi(BASE_URL, 'POST', payload);
 
@@ -36,7 +37,7 @@ export const fetchReplyPost = async () => {
   // const replies = await res.json();
   
   textInput.value = '';
-  writerInput.value = '';
+  // writerInput.value = ''; // 로그인정보가 있으니까 필요없어져 주석처리
   
   // renderReplies(replies);
   // 무한스크롤 댓글 1페이지 렌더
