@@ -12,12 +12,12 @@ CREATE TABLE tbl_score (
 );
 select * from tbl_score;
 
-select stu_num, stu_name, kor, eng, total, A.rank, A.cnt
-from (select *,
-             RANK() OVER (order by average desc) AS rank,
-              COUNT(*) OVER() AS cnt
-      from tbl_score) A
-where stu_num = 2;
+# select stu_num, stu_name, kor, eng, total, A.rank, A.cnt
+# from (select *,
+#              RANK() OVER (order by average desc) AS rank,
+#               COUNT(*) OVER() AS cnt
+#       from tbl_score) A
+# where stu_num = 2;
 
 
 
@@ -256,8 +256,8 @@ REFERENCES tbl_board (board_no);
 ALTER TABLE like_log
 ADD reaction_date DATETIME DEFAULT current_timestamp;
 
-ALTER TABLE like_log
-RENAME COLUMN lik_date TO like_date;
+# ALTER TABLE like_log
+# RENAME COLUMN lik_date TO like_date;
 
 select *
 from like_log;

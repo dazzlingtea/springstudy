@@ -7,7 +7,6 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
-import com.study.springstudy.springmvc.chap05.entity.LikeLog;
 import com.study.springstudy.springmvc.chap05.entity.ViewLog;
 import com.study.springstudy.springmvc.chap05.mapper.LikeLogMapper;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
@@ -134,19 +133,19 @@ public class BoardService {
             boardMapper.upViewCount(boardNo);
         }
 
-        // 좋아요 조건 처리
-        LikeLog like = likeLogMapper.findLikeAccount(currentUserAccount, boardNo);
-        if(like == null) {
-            likeLogMapper.insertLike(
-                    LikeLog.builder()
-                            .boardNo(b.getBoardNo())
-                            .account(currentUserAccount)
-                            .build()
-            );
-
-        } else {
-            likeLogMapper.deleteLike(b.getAccount(), boardNo);
-        }
+//        // 좋아요 조건 처리
+//        LikeLog like = likeLogMapper.findLikeAccount(currentUserAccount, boardNo);
+//        if(like == null) {
+//            likeLogMapper.insertLike(
+//                    LikeLog.builder()
+//                            .boardNo(b.getBoardNo())
+//                            .account(currentUserAccount)
+//                            .build()
+//            );
+//
+//        } else {
+//            likeLogMapper.deleteLike(b.getAccount(), boardNo);
+//        }
 
 
 

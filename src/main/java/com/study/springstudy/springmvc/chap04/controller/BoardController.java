@@ -5,13 +5,15 @@ import com.study.springstudy.springmvc.chap04.common.Search;
 import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.service.BoardService;
+import com.study.springstudy.springmvc.chap05.dto.response.ReactionDto;
+import com.study.springstudy.springmvc.chap05.service.ReactionService;
+import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,20 +24,22 @@ import java.util.List;
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     //private final BoardRepository repository;
-    private final BoardService service;
+    private final BoardService boardService;
+    private final ReactionService reactionService;
 
 
     // 1. 목록 조회 요청 (/board/list : GET)
     @GetMapping("/list")
     public String list(@ModelAttribute("s") Search page, Model model) {
 
-        List<BoardListResponseDto> bList = service.findList(page);
+        List<BoardListResponseDto> bList = boardService.findList(page);
 
         // 페이지 정보를 생성하여 JSP에게 전송
-        PageMaker maker = new PageMaker(page, service.getCount(page));
+        PageMaker maker = new PageMaker(page, boardService.getCount(page));
 //        System.out.println("maker = " + maker);
 
         model.addAttribute("bList", bList);
@@ -57,7 +61,7 @@ public class BoardController {
     @PostMapping("/write")
     public String write(BoardWriteRequestDto dto, HttpSession session) throws SQLException {
 
-        service.register(dto, session);
+        boardService.register(dto, session);
         return "redirect:/board/list";
     }
 
@@ -66,7 +70,7 @@ public class BoardController {
     @GetMapping("/delete")
     public String delete(int bno, HttpSession session) throws SQLException {
 
-        service.delete(bno, session);
+        boardService.delete(bno, session);
         return "redirect:/board/list";
     }
 
@@ -77,7 +81,7 @@ public class BoardController {
                          HttpServletRequest request,
                          HttpServletResponse response) throws SQLException {
 
-        model.addAttribute("bbb", service.detail(bno, request, response));
+        model.addAttribute("bbb", boardService.detail(bno, request, response));
 
         // 요청 헤더를 파싱하여 이전 페이지의 주소를 얻어냄
         String ref = request.getHeader("Referer");
@@ -87,5 +91,30 @@ public class BoardController {
     }
 
     // 목록 조회땐 제목 8글자, 내용 10글자까지만 조회되고..상세조회하면 조회수 상승 (DTO)
+    // 좋아요 요청 비동기 처리
+    @GetMapping("/like")
+    @ResponseBody
+    public ResponseEntity<?> like(long bno, HttpSession session) throws SQLException {
 
+        log.info("좋아요 async request!");
+
+        String account = LoginUtil.getLoggedInUserAccount(session);
+
+        ReactionDto dto = reactionService.like(bno, account);// 좋아요 요청 처리
+        return ResponseEntity.ok().body(dto);
+    }
+    // 싫어요 요청 비동기 처리
+    @GetMapping("/dislike")
+    @ResponseBody
+    public ResponseEntity<?> dislike(long bno, HttpSession session) {
+
+        log.info("싫어요 async request!");
+
+        String account = LoginUtil.getLoggedInUserAccount(session);
+
+        ReactionDto dto = reactionService.dislike(bno, account);// 싫어요 요청 처리
+
+        return ResponseEntity.ok().body(dto);
+
+    }
 }
