@@ -31,7 +31,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry
                 .addInterceptor(boardInterceptor)
                 .addPathPatterns("/board/*")
-                .excludePathPatterns("/board/list", "/board/detail")
+                .excludePathPatterns("/board/list", "/board/detail",
+                        "/board/like", "board/dislike")
 //                .addPathPatterns("/board/write", "/board/delete")
                 ;
 

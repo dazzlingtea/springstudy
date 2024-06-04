@@ -7,8 +7,9 @@ import com.study.springstudy.springmvc.chap04.dto.BoardListResponseDto;
 import com.study.springstudy.springmvc.chap04.dto.BoardWriteRequestDto;
 import com.study.springstudy.springmvc.chap04.entity.Board;
 import com.study.springstudy.springmvc.chap04.mapper.BoardMapper;
+import com.study.springstudy.springmvc.chap05.entity.Reaction;
 import com.study.springstudy.springmvc.chap05.entity.ViewLog;
-import com.study.springstudy.springmvc.chap05.mapper.LikeLogMapper;
+import com.study.springstudy.springmvc.chap05.mapper.ReactionMapper;
 import com.study.springstudy.springmvc.chap05.mapper.ReplyMapper;
 import com.study.springstudy.springmvc.chap05.mapper.ViewLogMapper;
 import com.study.springstudy.springmvc.util.LoginUtil;
@@ -37,7 +38,8 @@ public class BoardService {
     private final BoardMapper boardMapper;
     private final ReplyMapper replyMapper;
     private final ViewLogMapper viewLogMapper;
-    private final LikeLogMapper likeLogMapper;
+//    private final LikeLogMapper likeLogMapper;
+    private final ReactionMapper reactionMapper;
 
     public List<BoardListResponseDto> findList(Search page) {
         List<BoardFindAllDto> boards = boardMapper.findAll(page);
@@ -92,8 +94,19 @@ public class BoardService {
         // 로그인 계정명
         String currentUserAccount = getLoggedInUserAccount(session);
 
+        // 상세조회시 초기렌더링에 그려질 데이터
+        BoardDetailResponseDto responseDto = new BoardDetailResponseDto(b);
+        responseDto.setLikeCount(reactionMapper.countLikes(bno));
+        responseDto.setDislikeCount(reactionMapper.countDislikes(bno));
+        Reaction reaction = reactionMapper.findOne(bno, currentUserAccount);
+        String type = null;
+        if(reaction != null) {
+            type = reaction.getReactionType().toString();
+        }
+        responseDto.setUserReaction(type);
+
         if(!isLoggedIn(session) || LoginUtil.isMine(b.getAccount(), currentUserAccount)) {
-            return new BoardDetailResponseDto(b);
+            return responseDto;
         }
         // 조회수가 올라가는 조건 처리 (쿠키버전)
 //        if(shouldIncreaseViewCount(bno, request, response)) {
@@ -149,7 +162,7 @@ public class BoardService {
 
 
 
-        return new BoardDetailResponseDto(b);
+        return responseDto;
 
 
 //        HttpSession session = request.getSession();
