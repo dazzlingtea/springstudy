@@ -1,17 +1,19 @@
 import { fetchReplies, renderReplies, fetchInfScrollReplies } from "./getReply.js";
 import { BASE_URL } from "./reply.js";
+import {callApi} from "./api";
 
 // 댓글 삭제 처리 이벤트 등록 함수
 
 const fetchReplyDelete = async (rno) => {
 
-  const res = await fetch(`${BASE_URL}/${rno}`, {
-    method: 'DELETE'
-  });
-  if(res.status !== 200) {
-    alert('삭제에 실패했습니다!');
-    return;
-  }
+  const res = await callApi(`${BASE_URL}/${rno}`, 'DELETE')
+  // const res = await fetch(`${BASE_URL}/${rno}`, {
+  //   method: 'DELETE'
+  // });
+  // if(res.status !== 200) {
+  //   alert('삭제에 실패했습니다!');
+  //   return;
+  // }
   // const replies = await res.json();
 
   // append 는 2페이지부터라서... fetchInfScrollReplies로 변경

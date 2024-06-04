@@ -27,8 +27,16 @@ public class ReplyService {
     public ReplyListDto getReplies(long boardNo, Page page) {
         List<Reply> replies = replyMapper.findAll(boardNo, page);
 
+//        String loginAccount = null;
+//        if(LoginUtil.isLoggedIn(session)) {
+//           loginAccount = LoginUtil.getLoggedInUserAccount(session);
+//        }
         List<ReplyDetailDto> dtoList = replies.stream()
-                .map(r -> new ReplyDetailDto(r))
+                .map(r -> {
+                    ReplyDetailDto replyDetailDto = new ReplyDetailDto(r);
+//                    replyDetailDto.setLoginAccount(loginAccount);
+                    return replyDetailDto;
+                })
                 .collect(Collectors.toList());
 
         ReplyListDto listDto = ReplyListDto

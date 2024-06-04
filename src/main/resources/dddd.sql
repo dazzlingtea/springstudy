@@ -261,3 +261,9 @@ ADD reaction_date DATETIME DEFAULT current_timestamp;
 
 select *
 from like_log;
+
+-- account(admin) 따라 댓글 작성자 변경
+UPDATE tbl_reply
+SET reply_writer = (SELECT name FROM tbl_member WHERE account = tbl_reply.account)
+WHERE tbl_reply.account IS NOT NULL
+;

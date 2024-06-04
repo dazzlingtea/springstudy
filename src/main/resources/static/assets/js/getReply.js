@@ -1,6 +1,7 @@
 
 import { BASE_URL } from "./reply.js";
 import { showSpinner, hideSpinner } from "./spinner.js";
+import {callApi} from "./api";
 
 function getRelativeTime(createAt) {
   // 현재 시간 구하기 (한국 표준시)
@@ -113,8 +114,9 @@ export async function fetchReplies(pageNo=1) {
   const bno = document.getElementById('wrap').dataset.bno; // 게시물 글번호
 // console.log('글번호: ', bno);
 
-  const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
-  const replyResponse = await res.json();
+  const replyResponse = await callApi(`${BASE_URL}/${bno}/page/${pageNo}`)
+  // const res = await fetch(`${BASE_URL}/${bno}/page/${pageNo}`);
+  // const replyResponse = await res.json();
   // {pageInfo: {}, replies: [] }
   // 댓글 목록 렌더링
   renderReplies(replyResponse);
@@ -144,9 +146,9 @@ function appendReplies({ replies }) {
   // 댓글 목록 렌더링
   let tag = '';
   if(replies && replies.length > 0) {
-    replies.forEach(({rno, writer, text, createAt}) => {
+    replies.forEach(({rno, writer, text, createAt, account}) => {
       tag += `
-      <div id='replyContent' class='card-body' data-reply-id='${rno}'>
+      <div id='replyContent' class='card-body' data-reply-id='${rno}' data-reply-account='${account}'>
           <div class='row user-block'>
               <span class='col-md-3'>
                   <b>${writer}</b>
@@ -156,8 +158,10 @@ function appendReplies({ replies }) {
           <div class='row'>
               <div class='col-md-9'>${text}</div>
               <div class='col-md-3 text-right'>
+                <c:if test="${account} ===  || ${account} === 'admin'">
                   <a id='replyModBtn' class='btn btn-sm btn-outline-dark' data-bs-toggle='modal' data-bs-target='#replyModifyModal'>수정</a>&nbsp;
                   <a id='replyDelBtn' class='btn btn-sm btn-outline-dark' href='#'>삭제</a>
+                </c:if>
               </div>
           </div>
       </div>
