@@ -32,4 +32,7 @@ public interface MemberMapper {
     // 세션아이디로 회원정보 조회
     Member findMemberBySessionId(String sessionId);
 
+    // 개인정보 업데이트
+    boolean updateMemberInfo(Member member);
+
 }

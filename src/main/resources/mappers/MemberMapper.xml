@@ -7,9 +7,9 @@
 
     <insert id="save">
         INSERT INTO tbl_member
-            (account, password, name, email)
+            (account, password, name, email, profile_img)
         VALUES
-            (#{account}, #{password}, #{name}, #{email})
+            (#{account}, #{password}, #{name}, #{email}, #{profileImg})
     </insert>
 
     <select id="findOne" resultType="member">
@@ -20,6 +20,7 @@
             , email
             , auth
             , reg_date
+            , profile_img
         FROM tbl_member
         WHERE account = #{account}
     </select>
@@ -43,9 +44,15 @@
 
     <select id="findMemberBySessionId" resultType="member">
         SELECT
-            account, name, email, auth, limit_time
+            account, name, email, auth, limit_time, profile_img
         FROM tbl_member
         WHERE session_id = #{sessionId}
     </select>
+
+    <update id="updateMemberInfo">
+        UPDATE tbl_member
+        SET name = #{name}, email = #{email}, profile_img = #{profileImg}
+        WHERE account = #{account}
+    </update>
 
 </mapper>

@@ -2,15 +2,20 @@ package com.study.springstudy.springmvc.chap05.api;
 
 
 import com.study.springstudy.springmvc.chap05.dto.request.LoginDto;
+import com.study.springstudy.springmvc.chap05.dto.request.MyPageDto;
 import com.study.springstudy.springmvc.chap05.dto.request.SignUpDto;
+import com.study.springstudy.springmvc.chap05.dto.response.LoginUserInfoDto;
+import com.study.springstudy.springmvc.chap05.dto.response.MyPageDetailDto;
 import com.study.springstudy.springmvc.chap05.service.LoginResult;
 import com.study.springstudy.springmvc.chap05.service.MemberService;
+import com.study.springstudy.springmvc.util.FileUtil;
 import com.study.springstudy.springmvc.util.LoginUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +29,7 @@ import javax.servlet.http.HttpSession;
 public class MemberController {
 
     private final MemberService memberService;
+    private String rootPath = "E:/spring_prj/upload";
 
     // 회원가입 양식 열기
     @GetMapping("/sign-up")
@@ -38,7 +44,17 @@ public class MemberController {
         log.info("/members/sign-up POST");
         log.debug("parameters: {}", dto);
 
-        boolean flag = memberService.join(dto);
+        // 프로필 이미지 추출
+        MultipartFile profileImage = dto.getProfileImage();
+        String profilePath = null;
+
+        if (!profileImage.isEmpty()) {
+            log.debug("attached profile img name: {}", dto.getProfileImage().getOriginalFilename());
+            // 서버에 업로드 후 업로드 경로 반환
+            profilePath = FileUtil.uploadFile(rootPath, profileImage);
+        }
+
+        boolean flag = memberService.join(dto, profilePath);
 
         return flag ? "redirect:/members/sign-in" : "redirect:/members/sign-up";
     }
@@ -92,7 +108,7 @@ public class MemberController {
         }
 
 
-        log.debug("로그인폼 이전 주소 : {}", session.getAttribute("prevPage"));
+        log.debug("로그인요청 이전 주소 : {}", session.getAttribute("prevPage"));
         log.debug("이전 쿼리스트링: {}", prevQs);
 
         LoginResult result = memberService.authenticate(dto, session, response);
@@ -140,5 +156,64 @@ public class MemberController {
         return "redirect:/";
     }
 
+    // ======= 마이페이지
+
+    @GetMapping("/my-page")
+    public void myPage() {
+        log.info("/members/my-page GET: forwarding to my-page.jsp");
+    }
+
+    @PostMapping("/my-page")
+//    @ResponseBody
+    public String myPage(MyPageDto dto, HttpSession session) {
+        log.info("/members/my-page POST");
+        log.debug("parameters: {}", dto);
+
+        LoginUserInfoDto loginUser = LoginUtil.getLoggedInUser(session);
+        if(!loginUser.getAccount().equals(dto.getAccount())) {
+            return "/";
+        }
+
+        // 프로필 이미지 추출
+        MultipartFile profileImage = dto.getProfileImage();
+        String profilePath = null;
+
+        if (!profileImage.isEmpty()) {
+            log.debug("attached profile img name: {}", dto.getProfileImage().getOriginalFilename());
+            // 서버에 업로드 후 업로드 경로 반환
+            profilePath = FileUtil.uploadFile(rootPath, profileImage);
+        }
+
+        MyPageDetailDto res = memberService.updateMember(dto, profilePath, loginUser);
+        if(res == null) return "/";
+        return "/members/my-page";
+    }
+
+//    @PostMapping("/my-page")
+//    @ResponseBody
+//    public ResponseEntity<?> myPage(MyPageDto dto, HttpSession session) {
+//        log.info("/members/my-page POST");
+//        log.debug("parameters: {}", dto);
+//
+//        LoginUserInfoDto loginUser = LoginUtil.getLoggedInUser(session);
+//        if(!loginUser.getAccount().equals(dto.getAccount())) {
+//            return ResponseEntity.status(403)
+//                    .body("로그인이 필요합니다.");
+//        }
+//
+//        // 프로필 이미지 추출
+//        MultipartFile profileImage = dto.getProfileImage();
+//        String profilePath = null;
+//
+//        if (!profileImage.isEmpty()) {
+//            log.debug("attached profile img name: {}", dto.getProfileImage().getOriginalFilename());
+//            // 서버에 업로드 후 업로드 경로 반환
+//            profilePath = FileUtil.uploadFile(rootPath, profileImage);
+//        }
+//
+//        MyPageDetailDto res = memberService.updateMember(dto, profilePath);
+//        if(res == null) return ResponseEntity.status(404).body(null);
+//        return ResponseEntity.ok().body(res);
+//    }
 
 }
