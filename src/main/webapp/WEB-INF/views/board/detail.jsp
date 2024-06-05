@@ -55,8 +55,11 @@
             <!-- 댓글 쓰기 영역 -->
             <div class="card">
                 <div class="card-body">
+<%--                    <c:if test="${empty login}">--%>
+<%--                        <a href="/members/sign-in">댓글은 로그인 후 작성해주세요!!</a>--%>
+<%--                    </c:if>--%>
                     <c:if test="${empty login}">
-                        <a href="/members/sign-in">댓글은 로그인 후 작성해주세요!!</a>
+                        <a href="/members/sign-in?redirect=/board/detail?bno=${bbb.boardNo}">댓글은 로그인 후 작성해주세요!!</a>
                     </c:if>
 
                     <c:if test="${login != null}">
@@ -70,6 +73,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+
+                                    <%--  여기.. --%>
+                                    <div class="profile-box">
+                                        <c:choose>
+                                            <c:when test="${login != null && login.profile != null}">
+                                                <img src="${login.profile}" alt="profile image">
+                                            </c:when>
+                                            <c:otherwise>
+                                                <img src="/assets/img/anonymous.jpg" alt="profile image">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+
                                     <label for="newReplyWriter" hidden>댓글 작성자</label>
                                     <input id="newReplyWriter" name="replyWriter" type="text"
                                            class="form-control" placeholder="작성자 이름"

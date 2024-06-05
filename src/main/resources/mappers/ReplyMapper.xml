@@ -23,10 +23,20 @@
         WHERE reply_no = #{replyNo}
     </delete>
 
-    <select id="findAll" resultType="reply">
-        SELECT * FROM tbl_reply
-        WHERE board_no = #{bno}
-        ORDER BY reply_no
+    <select id="findAll" resultType="com.study.springstudy.springmvc.chap05.dto.request.ReplyFindAllDto">
+        SELECT
+            R.reply_no,
+            R.reply_text,
+            R.reply_writer,
+            R.reply_date,
+            R.board_no,
+            R.account,
+            M.profile_img
+        FROM tbl_reply R
+        INNER JOIN tbl_member M
+        ON R.account = M.account
+        WHERE R.board_no = #{bno}
+        ORDER BY R.reply_no
         LIMIT #{p.pageStart}, #{p.amount}
     </select>
 

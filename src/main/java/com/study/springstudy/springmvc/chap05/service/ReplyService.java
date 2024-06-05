@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.chap05.service;
 
 import com.study.springstudy.springmvc.chap04.common.Page;
 import com.study.springstudy.springmvc.chap04.common.PageMaker;
+import com.study.springstudy.springmvc.chap05.dto.request.ReplyFindAllDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyModifyDto;
 import com.study.springstudy.springmvc.chap05.dto.request.ReplyPostDto;
 import com.study.springstudy.springmvc.chap05.dto.response.ReplyDetailDto;
@@ -27,7 +28,7 @@ public class ReplyService {
 
     // 댓글 목록 전체조회
     public ReplyListDto getReplies(long boardNo, Page page) {
-        List<Reply> replies = replyMapper.findAll(boardNo, page);
+        List<ReplyFindAllDto> replies = replyMapper.findAll(boardNo, page);
 
 //        String loginAccount = null;
 //        if(LoginUtil.isLoggedIn(session)) {

@@ -9,6 +9,20 @@
                 <img src="/assets/img/logo.png" alt="로고이미지">
             </a>
         </h1>
+
+        <div class="profile-box">
+
+          <c:choose>
+              <c:when test="${login != null && login.profile != null}">
+                <img src="${login.profile}" alt="profile image">
+              </c:when>
+              <c:otherwise>
+                <img src="/assets/img/anonymous.jpg" alt="profile image">
+              </c:otherwise>
+          </c:choose>
+
+        </div>
+
         <h2 class="intro-text">Welcome ${login.nickName}</h2>
         <a href="#" class="menu-open">
             <span class="menu-txt">MENU</span>
@@ -31,7 +45,7 @@
                 <li><a href="/members/sign-in">Sign In</a></li>
             </c:if>
             <c:if test="${login != null}">
-                <li><a href="#">My Page</a></li>
+                <li><a href="/members/my-page">My Page</a></li>
                 <li><a href="/members/sign-out">Sign Out</a></li>
             </c:if>
 

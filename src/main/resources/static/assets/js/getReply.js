@@ -148,13 +148,27 @@ function appendReplies({ replies, loginUser }) {
   // 댓글 목록 렌더링
   let tag = '';
   if(replies && replies.length > 0) {
-    replies.forEach(({rno, writer, text, createAt, account:replyAccount}) => {
+    replies.forEach(({ rno, writer, text, createAt, account:replyAccount, profile }) => {
       tag += `
       <div id='replyContent' class='card-body' data-reply-id='${rno}' data-reply-account='${replyAccount}'>
           <div class='row user-block'>
+              
               <span class='col-md-3'>
+                 <img class='reply-profile' src='${profile ? profile : '/assets/img/anonymous.jpg'}' alt='profile image'>`;
+
+
+      // if(profile !== null) {
+      //   tag += `
+      //             <img src="${profile}" class="reply-profile" alt="profile image">`;
+      //
+      // } else {
+      //   tag += `
+      //             <img src="/assets/img/anonymous.jpg" class="reply-profile" alt="profile image">`;
+      // }
+
+      tag += `             
                   <b>${writer}</b>
-              </span>
+              </span>            
               <span class='offset-md-6 col-md-3 text-right'><b>${getRelativeTime(createAt)}</b></span>
           </div><br>
           <div class='row'>
@@ -277,3 +291,7 @@ export function setupInfiniteScroll() {
   // window.addEventListener('scroll', scrollHandler)
   window.addEventListener('scroll', debouncedScrollHandler)
 }
+
+// document.querySelector('.profile-circle').onclick = e => {
+//   console.log(e.target);
+// }

@@ -2,6 +2,7 @@ package com.study.springstudy.springmvc.upload;
 
 import com.study.springstudy.springmvc.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,8 @@ import java.io.File;
 public class UploadController {
 
     // 업로드 루트 경로
-    private String rootPath = "E:/spring_prj/upload";
+    @Value("${file.upload.root-path}")
+    private String rootPath;
 
     @GetMapping("/upload/form")
     public String uploadForm() {

@@ -284,3 +284,10 @@ WHERE account = 'test';
 
 DELETE FROM tbl_reply
 WHERE account IS NULL;
+
+-- 회원테이블에 프로필사진 경로 컬럼 추가
+ALTER TABLE tbl_member
+ADD (profile_img VARCHAR(200));
+
+SELECT * from tbl_member
+;
