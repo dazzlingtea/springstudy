@@ -277,7 +277,7 @@ ON DELETE cascade
 -- cascade 없는 reaction 때문에 좋아요 있는 게시글 삭제 불가
 
 SELECT * from tbl_reply
-WHERE board_no = 116;
+WHERE board_no = 98;
 
 SELECT * from tbl_reply
 WHERE account = 'test';
