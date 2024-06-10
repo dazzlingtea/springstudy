@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 @Controller
@@ -35,7 +36,7 @@ public class SnsLoginController {
 
     // 인가코드를 받는 요청 메서드
     @GetMapping("/oauth/kakao")
-    public String kakaoCode(String code) {
+    public String kakaoCode(String code, HttpSession session) {
         log.info("카카오 인가코드 발급 - {}", code);
 
         // 토큰 발급에 필요한 파라미터 만들기
@@ -45,9 +46,9 @@ public class SnsLoginController {
         requestParams.put("code", code);
 
         // 인증 액세스 토큰 발급 요청
-        snsLoginService.kakaoLogin(requestParams);
+        snsLoginService.kakaoLogin(requestParams,session);
 
-        return "";
+        return "redirect:/";
     }
 
 }
